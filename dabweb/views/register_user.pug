@@ -3,9 +3,9 @@ block content
   h1 Registar na Aplicação
   form(action="/users/register" method="POST")
     div.form-group
-      label(for="nome")
-        b Username
-      input.form-control(type="text" name="nome" autocomplete="off" required)
+      label
+        b Nome
+      input.form-control(type="text" name="name" autocomplete="off" required)
     div.form-group
       label
         b Email
@@ -17,8 +17,8 @@ block content
     div.form-group
       label
         b Curso
-      select.custom-select(required)
+      select.custom-select(name="course" required)
         option(value="") Curso
         each curso in cursos
-          option(value=curso)= curso
+          option(value=curso name="course")= curso
     button.btn.btn-primary(type="submit") Registar

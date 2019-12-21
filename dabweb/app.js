@@ -3,17 +3,6 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-const mongoose = require("mongoose");
-
-mongoose
-  .connect("mongodb://localhost:27017/dabweb", {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-  })
-  .then(() =>
-    console.log("MongoDB connected: " + mongoose.connection.readyState)
-  )
-  .catch(() => console.log("MongoDB connection error"));
 
 var indexRouter = require("./routes/index");
 var dashboardRouter = require("./routes/dashboard");
