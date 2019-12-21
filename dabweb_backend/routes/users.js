@@ -10,11 +10,11 @@ router.post("/register", async function(req, res, next) {
     user = await Users.findOne(req.body.email);
     console.log("--- printing result of find user in db below ---");
     console.log(user);
+    let resdata = {
+      added: ""
+    };
     if (!user) {
       //can insert user
-      let resdata = {
-        added: ""
-      };
       let { name, email, password, course } = req.body;
       let user = {
         name: name,
