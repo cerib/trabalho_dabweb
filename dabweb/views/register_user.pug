@@ -1,6 +1,13 @@
 extends layout
+
+block scripts
+  script(src="/javascripts/register.js")
+
 block content
   h1 Registar na Aplicação
+  if message
+    div.alert.alert-warning.alert-dismissible.fade.show(role="alert")
+      =message
   form(action="/users/register" method="POST")
     div.form-group
       label
@@ -9,7 +16,10 @@ block content
     div.form-group
       label
         b Email
-      input.form-control(type="text" name="email" required)
+      if email
+        input.form-control.bg-warning(type="text" name="email" value=email required)
+      else
+        input.form-control(type="text" name="email" required)
     div.form-group
       label
         b Password

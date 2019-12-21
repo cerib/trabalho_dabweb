@@ -15,7 +15,6 @@ router.get("/register", function(req, res, next) {
 
 /* Insert user in database */
 router.post("/register", (req, res, next) => {
-  console.log(req.body);
   //hash password
   bcrypt.genSalt(10, (err, salt) => {
     if (err) {
@@ -25,6 +24,7 @@ router.post("/register", (req, res, next) => {
         if (err) {
           console.error(err);
         } else {
+          //enviar tudo para o backend
           axios
             .post("http://localhost:5000/users/register", {
               name: req.body.name,
@@ -32,13 +32,26 @@ router.post("/register", (req, res, next) => {
               password: hash,
               course: req.body.course
             })
-            .then(response => res.jsonp(response.data))
+            //receber respota do bakend (sucesso/insucesso) e agir de acordo com o resultado
+            .then(resdata => {
+              console.log(resdata.data.added);
+              if (resdata.data.added == true) {
+                res.render("index", {
+                  message: "Registado com sucesso!"
+                });
+              } else {
+                res.render("register_user", {
+                  message: "Email já existe",
+                  name: req.body.name,
+                  email: req.body.email,
+                  cursos: ["MIEI"]
+                });
+              }
+            })
             .catch(e => console.error(e));
         }
       });
     }
   });
-  //enviar tudo para o backend
-  //receber respota do bakend (sucesso/insucesso) e agir de acordo com o resultado
 });
 module.exports = router;
