@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 var axios = require("axios");
 var bcrypt = require("bcryptjs");
+const passport = require("passport");
 
 /* Redirect to home page */
 router.get("/", (req, res, next) => {
@@ -10,6 +11,12 @@ router.get("/", (req, res, next) => {
 
 /* GET users register page */
 router.get("/register", function(req, res, next) {
+  if (req.isAuthenticated()) {
+    res.redirect("/");
+    //this return avoids error of "cannot set headers after they are sent to the client"
+    //and also helps keep code clean so I don't have to wrap everything else in an else{} block
+    return;
+  }
   res.render("register_user", { cursos: ["MIEI"] });
 });
 
@@ -51,4 +58,17 @@ router.post("/register", (req, res, next) => {
     }
   });
 });
+
+router.post("/login", (req, res, next) => {
+  passport.authenticate("local", {
+    successRedirect: "/dashboard",
+    failureRedirect: "/"
+  })(req, res, next);
+});
+
+router.get("/logout", (req, res, next) => {
+  req.logout();
+  res.redirect("/");
+});
+
 module.exports = router;

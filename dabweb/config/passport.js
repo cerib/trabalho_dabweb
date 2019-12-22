@@ -16,7 +16,7 @@ module.exports = function(passport) {
             });
           } else {
             //Check password
-            bcrypt.compare(passport, user.password, (err, isMatch) => {
+            bcrypt.compare(password, user.password, (err, isMatch) => {
               if (err) {
                 throw err;
               } else if (isMatch) {
@@ -32,7 +32,7 @@ module.exports = function(passport) {
   );
 
   passport.serializeUser((user, done) => {
-    done(null, user.id);
+    done(null, user._id);
   });
 
   passport.deserializeUser((id, done) => {

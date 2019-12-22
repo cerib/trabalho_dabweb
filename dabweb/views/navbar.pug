@@ -6,9 +6,16 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
     ul.navbar-nav.mr-auto
       li.nav-item
         a.nav-link(href="/") Home
-      li.nav-item
-        a.nav-link(href="/users/register") Registar
-    form.form-inline.my-2.my-lg-0
-      input.form-control.mr-sm-2(type="email" placeholder="Email" aria-label="email")
-      input.form-control.mr-sm-2(type="password" placeholder="Password" aria-label="password")
-      button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Login
+      if !authenticated
+        li.nav-item
+          a.nav-link(href="/users/register") Registar
+    if authenticated
+      if email
+        div.nav-item.mr-2
+          =email
+      button.btn.btn-outline-info(type="button" onclick="window.location.href = '/users/logout';") Logout
+    else
+      form.form-inline.my-2.my-lg-0(action="/users/login" method="POST")
+        input.form-control.mr-sm-2(type="email" name="email" placeholder="Email" aria-label="email")
+        input.form-control.mr-sm-2(type="password" name="password" placeholder="Password" aria-label="password")
+        button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Login

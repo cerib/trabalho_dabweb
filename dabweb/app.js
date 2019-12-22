@@ -4,6 +4,10 @@ var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
 
+const session = require("express-session");
+const passport = require("passport");
+require("./config/passport")(passport);
+
 var indexRouter = require("./routes/index");
 var dashboardRouter = require("./routes/dashboard");
 var usersRouter = require("./routes/users");
@@ -19,6 +23,19 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+
+//session
+app.use(
+  session({
+    secret: "dab na web",
+    resave: false,
+    saveUninitialized: true
+  })
+);
+
+//passport middleware
+app.use(passport.initialize());
+app.use(passport.session());
 
 app.use("/users", usersRouter);
 app.use("/dashboard", dashboardRouter);
@@ -39,14 +56,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
-
-//session
-app.use(
-  session({
-    secret: "dab na web",
-    resave: false,
-    saveUninitialized: true
-  })
-);
 
 module.exports = app;
