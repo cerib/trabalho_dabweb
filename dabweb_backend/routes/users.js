@@ -3,7 +3,31 @@ var router = express.Router();
 
 const Users = require("../controllers/users");
 
-/* GET users listing. */
+/* Get user from DB */
+
+router.get("/finduserbyid/:id", async (req, res, next) => {
+  let id = req.params.id;
+  try {
+    user = await Users.findById(id);
+    res.jsonp(user);
+  } catch (err) {
+    console.loge(err);
+    res.sendStatus(400);
+  }
+});
+
+router.get("/finduser/:email", async (req, res, next) => {
+  let email = req.params.email;
+  try {
+    user = await Users.findOne(email);
+    res.jsonp(user);
+  } catch (error) {
+    console.loge(err);
+    res.sendStatus(400);
+  }
+});
+
+/* Register user in DB. */
 router.post("/register", async function(req, res, next) {
   let user = null;
   try {

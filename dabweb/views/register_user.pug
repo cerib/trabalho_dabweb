@@ -6,7 +6,7 @@ block scripts
 block content
   h1 Registar na Aplicação
   if message
-    div.alert.alert-warning.alert-dismissible.fade.show(role="alert")
+    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg")
       =message
   form(action="/users/register" method="POST")
     div.form-group

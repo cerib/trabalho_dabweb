@@ -34,11 +34,8 @@ router.post("/register", (req, res, next) => {
             })
             //receber respota do bakend (sucesso/insucesso) e agir de acordo com o resultado
             .then(resdata => {
-              console.log(resdata.data.added);
               if (resdata.data.added == true) {
-                res.render("index", {
-                  message: "Registado com sucesso!"
-                });
+                res.redirect("/?registered=true");
               } else {
                 res.render("register_user", {
                   message: "Email já existe",

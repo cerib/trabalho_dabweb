@@ -40,4 +40,13 @@ app.use(function(err, req, res, next) {
   res.render("error");
 });
 
+//session
+app.use(
+  session({
+    secret: "dab na web",
+    resave: false,
+    saveUninitialized: true
+  })
+);
+
 module.exports = app;

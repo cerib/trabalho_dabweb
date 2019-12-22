@@ -1,5 +1,8 @@
 extends layout
 
 block content
+  if message
+    div.alert.alert-success(role="alert")
+      p= message
   h1 DabWeb
   p Welcome to the Social Network for Students
