@@ -21,12 +21,14 @@ router.get("/", ensureAuthenticated, async (req, res) => {
 router.post("/posts/new", ensureAuthenticated, (req, res) => {
   let maxPostLength = 1000;
   let textContent = req.body.text.slice(0, maxPostLength);
+  let hashTags = req.body.text.match(/(#[A-z0-9]+)/g);
   axios
     .post("http://localhost:5000/posts/new", {
       text: textContent,
       email: req.user.email,
       name: req.user.name,
-      course: req.user.course
+      course: req.user.course,
+      hashTags: hashTags
     })
     .then(response => res.redirect("/dashboard"))
     .catch(e => {

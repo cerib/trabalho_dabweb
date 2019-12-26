@@ -5,7 +5,8 @@ const post = mongoose.Schema(
     name: { type: String, required: true },
     email: { type: String, required: true },
     course: { type: String, required: true },
-    text: { type: String }
+    text: { type: String },
+    hashTags: [{ type: String }]
   },
   { timestamps: true }
 );
