@@ -12,7 +12,7 @@ router.get("/", (req, res, next) => {
 /* GET users register page */
 router.get("/register", function(req, res, next) {
   if (req.isAuthenticated()) {
-    res.redirect("/");
+    res.redirect("/dashboard");
     //this return avoids error of "cannot set headers after they are sent to the client"
     //and also helps keep code clean so I don't have to wrap everything else in an else{} block
     return;

@@ -16,8 +16,8 @@ window.onload = function() {
     });
     */
     post.innerHTML = post.innerHTML.replace(
-      /#(\S*)/g,
-      '<a href="http://localhost:7777/hashtag/#$1">#$1</a>'
+      /(#[A-z0-9]+)/g,
+      '<a href="http://localhost:7777/hashtag/$1">$1</a>'
     );
     //post.innerHTML = words.join(" ");
   }
