@@ -1,8 +1,8 @@
 extends layout
 block content
-  div#wrapper.d-flex(style="width: 100%; position:absolute;" )
+  div.d-flex
     // Sidebar
-    #sidebar-wrapper.bg-light.border-right
+    .bg-light.border-right
       .list-group.list-group-flush
         a.list-group-item.list-group-item-action.bg-light(href='#') Dashboard
         a.list-group-item.list-group-item-action.bg-light(href='#') Shortcuts
@@ -11,6 +11,5 @@ block content
         a.list-group-item.list-group-item-action.bg-light(href='#') Profile
         a.list-group-item.list-group-item-action.bg-light(href='#') Status
     //conteudo da pagina
-    #page-content-wrapper
-      .container-fluid
-        block authenticatedcontent
+    .container-fluid
+      block authenticatedcontent
