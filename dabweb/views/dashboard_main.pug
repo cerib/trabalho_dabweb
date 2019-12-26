@@ -15,7 +15,7 @@ block authenticatedcontent
     button.btn.btn-primary(type="submit") Enviar
   .container-fluid(id="posts-container")
     each post in posts
-      .card.mt-1
+      .card.mt-1(class="post")
         if post.image
           img.card-img-top(src='...' alt='...')
         .card-body
