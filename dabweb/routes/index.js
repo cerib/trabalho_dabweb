@@ -12,10 +12,7 @@ router.get("/", function(req, res, next) {
       message: "Registado com sucesso!"
     });
   } else if (req.isAuthenticated()) {
-    res.render("dashboard", {
-      authenticated: req.isAuthenticated(),
-      email: req.user.email
-    });
+    res.redirect("/dashboard");
   } else {
     res.render("index");
   }
