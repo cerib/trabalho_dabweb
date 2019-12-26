@@ -15,6 +15,7 @@ router.get("/", async (req, res, next) => {
 
 router.post("/new", async (req, res, next) => {
   try {
+    req.body.text = req.body.text.trim();
     let post = await Posts.insertNew(req.body);
     console.log("New post inserted by " + req.body.email);
     res.sendStatus(200);

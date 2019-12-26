@@ -1,13 +1,27 @@
 extends sidebar
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/dashboard.css')
+
 block scripts
   script(src="/javascripts/dashboard.js")
 
 block authenticatedcontent
-  form(action="/dashboard/posts/new" method="POST" style="width: 60%; margin-left: auto; margin-right: auto; margin-top: 50px")
+  form(action="/dashboard/posts/new" method="POST" id="new-post-form")
     div.form-group
       label
         b Conteúdo da Publicação
-      textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required style="min-height: 100px")
+      textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
     button.btn.btn-primary(type="submit") Enviar
-  each post in posts
-    p= post.text
+  .container-fluid(id="posts-container")
+    each post in posts
+      .card.mt-1
+        if post.image
+          img.card-img-top(src='...' alt='...')
+        .card-body
+          h5.card-title 
+            =post.name
+          h6.card-subtitle.mb-2.text-muted 
+            =post.email
+          p.card-text
+            =post.text

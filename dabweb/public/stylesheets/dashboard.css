@@ -1,0 +1,21 @@
+#new-post-form {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+#new-post-form-textarea {
+  min-height: 100px;
+}
+
+#posts-container {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+}
+
+.card-text {
+  white-space: pre-line;
+}
