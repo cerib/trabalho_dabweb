@@ -58,4 +58,13 @@ router.post("/register", async function(req, res, next) {
   }
 });
 
+router.get("/search", async (req, res, next) => {
+  try {
+    console.log("finding users called " + req.query.searchQuery);
+    res.jsonp(await Users.Search(req.query.searchQuery));
+  } catch (e) {
+    console.log(e);
+  }
+});
+
 module.exports = router;

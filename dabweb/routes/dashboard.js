@@ -4,12 +4,16 @@ var router = express.Router();
 const axios = require("axios");
 const { ensureAuthenticated } = require("../config/auth");
 
+router.get("*", function(req, res, next) {
+  res.locals.authenticated = req.user ? true : false;
+  next();
+});
+
 /* GET dashboard home. */
 router.get("/", ensureAuthenticated, async (req, res) => {
   try {
     let response = await axios.get("http://localhost:5000/posts/");
     res.render("dashboard_main", {
-      authenticated: req.isAuthenticated(),
       email: req.user.email,
       posts: response.data
     });
@@ -35,5 +39,21 @@ router.post("/posts/new", ensureAuthenticated, (req, res) => {
       console.error(e);
       res.redirect("/");
     });
+});
+
+router.get("/search", ensureAuthenticated, async (req, res) => {
+  if (req.query.searchQuery.length > 2) {
+    try {
+      let query = req.query.searchQuery;
+      let response = await axios.get(
+        "http://localhost:5000/users/search?searchQuery=" + query
+      );
+      res.render("usersearchresults", { users: response.data });
+    } catch (e) {
+      console.log(e);
+    }
+  } else {
+    res.redirect("/dashboard");
+  }
 });
 module.exports = router;

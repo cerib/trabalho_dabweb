@@ -1,0 +1,18 @@
+extends sidebar
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/dashboard.css')
+
+block scripts
+  script(src="/javascripts/dashboard.js")
+
+block authenticatedcontent
+
+  .card-columns
+    each user in users
+      .card
+        if user.picture
+          img.card-img-top(src=user.picture alt='Profile picture')
+        else
+          img.card-img-top(src="https://i.imgur.com/mCHMpLT.png" alt='Default Profile picture' style="max-width: 100px")
+        .card-body

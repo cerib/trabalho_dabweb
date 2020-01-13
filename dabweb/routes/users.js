@@ -4,6 +4,11 @@ var axios = require("axios");
 var bcrypt = require("bcryptjs");
 const passport = require("passport");
 
+router.get("*", function(req, res, next) {
+  res.locals.authenticated = req.user ? true : false;
+  next();
+});
+
 /* Redirect to home page */
 router.get("/", (req, res, next) => {
   res.redirect("/");

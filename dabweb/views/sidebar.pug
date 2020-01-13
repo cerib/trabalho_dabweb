@@ -4,12 +4,9 @@ block content
     // Sidebar
     .bg-light.border-right
       .list-group.list-group-flush
-        a.list-group-item.list-group-item-action.bg-light(href='#') Dashboard
-        a.list-group-item.list-group-item-action.bg-light(href='#') Shortcuts
-        a.list-group-item.list-group-item-action.bg-light(href='#') Overview
-        a.list-group-item.list-group-item-action.bg-light(href='#') Events
-        a.list-group-item.list-group-item-action.bg-light(href='#') Profile
-        a.list-group-item.list-group-item-action.bg-light(href='#') Status
+        a.list-group-item.list-group-item-action.bg-light(href='/dashboard') Frontpage
+        a.list-group-item.list-group-item-action.bg-light(href='/profile') Profile
+        a.list-group-item.list-group-item-action.bg-light(href='/groups') Groups
     //conteudo da pagina
     .container-fluid
       block authenticatedcontent
