@@ -12,7 +12,7 @@ router.get("*", function(req, res, next) {
 /* GET dashboard home. */
 router.get("/", ensureAuthenticated, async (req, res) => {
   try {
-    let response = await axios.get("http://localhost:5000/posts/");
+    let response = await axios.get("http://localhost:5000/posts");
     res.render("dashboard_main", {
       email: req.user.email,
       posts: response.data

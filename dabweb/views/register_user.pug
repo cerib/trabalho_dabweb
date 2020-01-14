@@ -12,7 +12,10 @@ block content
     div.form-group
       label
         b Nome
-      input.form-control(type="text" name="name" autocomplete="off" required)
+      if name
+        input.form-control(type="text" name="name" autocomplete="off" value=name required)
+      else
+        input.form-control(type="text" name="name" autocomplete="off" required)
     div.form-group
       label
         b Email
