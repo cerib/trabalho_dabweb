@@ -56,4 +56,5 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
     res.redirect("/dashboard");
   }
 });
+
 module.exports = router;
