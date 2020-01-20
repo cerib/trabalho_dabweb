@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 
 const post = mongoose.Schema(
   {
-    name: { type: String, required: true },
-    email: { type: String, required: true },
-    group: { type: String },
+    author: { type: String, required: true },
+    authorAt: { type: String, required: true },
+    groupAt: { type: String },
     text: { type: String },
     hashTags: [{ type: String }]
   },
