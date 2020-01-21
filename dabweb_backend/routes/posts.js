@@ -3,6 +3,14 @@ var router = express.Router();
 
 const Posts = require("../controllers/posts");
 
+// criar post, apagar, editar, visualizar um, visualizar todos de um grupo
+
+// POST /api/posts/ (campos no body)
+// DELETE /api/posts/:postid
+// PUT /api/posts/:postid
+// GET /api/posts/:postid
+// GET /api/posts/group/:groupat
+
 router.get("/", async (req, res, next) => {
   try {
     let posts = await Posts.get();

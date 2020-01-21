@@ -6,7 +6,7 @@ module.exports.findOne = email => {
 
 module.exports.insertNew = fields => {
   let newUser = new User(fields);
-  newUser.save();
+  return newUser.save();
 };
 
 module.exports.findById = id => {
@@ -22,6 +22,11 @@ module.exports.findByEmail = email => {
   );
 };
 
+module.exports.Search = at => {
+  return User.findOne({ at: at });
+};
+
+/*
 module.exports.Search = query => {
   return User.find(
     {
@@ -39,3 +44,4 @@ module.exports.Search = query => {
     { password: 0 }
   );
 };
+*/

@@ -4,7 +4,7 @@ const post = mongoose.Schema(
   {
     author: { type: String, required: true },
     authorAt: { type: String, required: true },
-    groupAt: { type: String },
+    groupAt: { type: String, required: true },
     text: { type: String },
     hashTags: [{ type: String }]
   },

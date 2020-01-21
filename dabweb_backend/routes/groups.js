@@ -3,6 +3,32 @@ var router = express.Router();
 
 const Groups = require("../controllers/groups");
 
+// dar follow e unfollow a um grupo
+// POST /api/groups/follow/:groupat/:userat
+// DELETE /api/groups/unfollow/:groupat/:userat
+
+// criar, apagar, editar, visualizar grupo
+// POST /api/groups (no body tem os campos)
+// DELETE /api/groups/:groupat
+// PUT /api/groups/:groupat
+// GET /api/groups/:groupat
+
+// convidar para grupo
+// POST /api/groups/:groupat/invite/:invitedat
+
+//route de teste insercao de grupo, com erros correctamente devolvidos na API
+router.post("/teste", async (req, res, next) => {
+  try {
+    let fields = req.body;
+    console.log(fields);
+    let group = await Groups.insertNew(fields);
+    res.jsonp(group);
+    console.log(group);
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
 router.get("/findbyemail", async (req, res, next) => {
   try {
     let email = req.query.email;

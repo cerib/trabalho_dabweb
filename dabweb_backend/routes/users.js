@@ -2,9 +2,60 @@ var express = require("express");
 var router = express.Router();
 
 const Users = require("../controllers/users");
+const Posts = require("../controllers/posts");
 
-/* Get user from DB */
+// criar, retrieve e editar user
+// POST "/api/users/" (campos no body)
+// GET "/api/users/:userat"
+// PUT "api/users/:userat"
 
+// visualizar perfil do user
+// GET "/api/users/:at/profile"
+
+/* Register user in DB. */
+//falta verificar se o at do grupo esta disponivel, o que acontece quando o at nao esta disponivel, criar grupo, etc
+router.post("/", async function(req, res, next) {
+  try {
+    let user = await Users.insertNew(req.body);
+    console.log(user);
+    res.sendStatus(200);
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* Search user by "at" field */
+router.get("/:at", async (req, res, next) => {
+  try {
+    res.jsonp(await Users.Search(req.params.at));
+  } catch (e) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* Fetch user and posts to view profile */
+router.get("/:at/profile", async (req, res, next) => {
+  try {
+    let user = await Users.Search(req.params.at);
+    let posts = await Posts.groupPosts(req.params.at);
+    res.jsonp({ user, posts });
+  } catch (e) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* router.get("/finduser/:email", async (req, res, next) => {
+  let email = req.params.email;
+  try {
+    user = await Users.findOne(email);
+    res.jsonp(user);
+  } catch (error) {
+    console.loge(err);
+    res.sendStatus(400);
+  }
+}); */
+
+/* 
 router.get("/finduserbyid/:id", async (req, res, next) => {
   let id = req.params.id;
   try {
@@ -15,56 +66,6 @@ router.get("/finduserbyid/:id", async (req, res, next) => {
     res.sendStatus(400);
   }
 });
-
-router.get("/finduser/:email", async (req, res, next) => {
-  let email = req.params.email;
-  try {
-    user = await Users.findOne(email);
-    res.jsonp(user);
-  } catch (error) {
-    console.loge(err);
-    res.sendStatus(400);
-  }
-});
-
-/* Register user in DB. */
-router.post("/register", async function(req, res, next) {
-  let user = null;
-  try {
-    user = await Users.findOne(req.body.email);
-    console.log("--- printing result of find user in db below ---");
-    console.log(user);
-    let resdata = {
-      added: ""
-    };
-    if (!user) {
-      //can insert user
-      let { name, email, password, course } = req.body;
-      let user = {
-        name: name,
-        email: email,
-        password: password,
-        course: course
-      };
-      Users.insertNew(user);
-      resdata.added = true;
-      res.jsonp(resdata);
-    } else {
-      resdata.added = false;
-      res.jsonp(resdata);
-    }
-  } catch (error) {
-    console.error(error);
-  }
-});
-
-router.get("/search", async (req, res, next) => {
-  try {
-    console.log("finding users called " + req.query.searchQuery);
-    res.jsonp(await Users.Search(req.query.searchQuery));
-  } catch (e) {
-    console.log(e);
-  }
-});
+*/
 
 module.exports = router;

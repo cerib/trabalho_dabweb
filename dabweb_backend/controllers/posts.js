@@ -17,3 +17,7 @@ module.exports.get = ammount => {
       .sort(sort);
   }
 };
+
+module.exports.groupPosts = at => {
+  return Post.find({ groupAt: at });
+};

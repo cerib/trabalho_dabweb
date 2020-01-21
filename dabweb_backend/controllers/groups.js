@@ -1,7 +1,7 @@
 const Group = require("../models/group");
 
 module.exports.insertNew = fields => {
-  new Group(fields).save();
+  return new Group(fields).save();
 };
 
 module.exports.findByEmail = email => {

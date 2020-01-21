@@ -32,17 +32,17 @@ module.exports = function(passport) {
   );
 
   passport.serializeUser((user, done) => {
-    done(null, user._id);
+    done(null, user.at);
   });
 
-  passport.deserializeUser((id, done) => {
+  passport.deserializeUser((at, done) => {
     axios
-      .get("http://localhost:5000/users/finduserbyid/" + id)
+      .get("http://localhost:5000/users/" + at)
       .then(res => {
         done(null, res.data);
       })
       .catch(err => {
-        console.log("Error deserializing user with id " + id);
+        console.log("Error deserializing user with at " + at);
         done(err, false);
       });
   });
