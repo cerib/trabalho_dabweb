@@ -4,6 +4,10 @@ module.exports.insertNew = fields => {
   return new Group(fields).save();
 };
 
+module.exports.findByAt = at => {
+  return Group.findOne({ at: at });
+};
+
 module.exports.findByEmail = email => {
   return Group.find({
     $or: [{ creator: email }, { members: email }]

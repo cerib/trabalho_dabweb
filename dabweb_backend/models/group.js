@@ -13,8 +13,8 @@ const group = mongoose.Schema(
     name: { type: String, required: true },
     at_creator: { type: String, required: true },
     at: { type: String, required: true, unique: true },
-    members: [{ type: UserSemPw, unique: true }],
-    invited: [{ type: UserSemPw, unique: true }],
+    members: [{ type: UserSemPw }],
+    invited: [{ type: UserSemPw }],
     public: { type: Boolean, required: true }
   },
   { timestamps: true }

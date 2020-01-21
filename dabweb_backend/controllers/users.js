@@ -13,6 +13,25 @@ module.exports.findById = id => {
   return User.findById(id);
 };
 
+module.exports.editByAt = async (at, name, password) => {
+  console.log(at + " " + name + " " + password);
+  let user = await User.findOne({ at: at });
+  if (!user) {
+    throw { error: "User with at '" + at + "' does not exist" };
+  }
+  try {
+    if (name) {
+      user.name = name;
+    }
+    if (password) {
+      user.password = password;
+    }
+    user.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports.findByEmail = email => {
   return User.find(
     {
