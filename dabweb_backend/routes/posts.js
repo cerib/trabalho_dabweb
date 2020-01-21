@@ -11,25 +11,44 @@ const Posts = require("../controllers/posts");
 // GET /api/posts/:postid
 // GET /api/posts/group/:groupat
 
-router.get("/", async (req, res, next) => {
+router.post("/", async (req, res, next) => {
   try {
-    let posts = await Posts.get();
-    res.jsonp(posts);
+    res.jsonp(await Posts.insertNew(req.body));
   } catch (error) {
-    console.log(error);
-    res.sendStatus(400);
+    res.status(400).jsonp(error);
   }
 });
 
-router.post("/new", async (req, res, next) => {
+router.delete("/:postid", async (req, res, next) => {
   try {
-    req.body.text = req.body.text.trim();
-    let post = await Posts.insertNew(req.body);
-    console.log("New post inserted by " + req.body.email);
+    res.jsonp(await Posts.deleteById(req.params.postid));
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+router.put("/:postid", async (req, res, next) => {
+  try {
+    await Posts.editById(req.params.postid, req.body.text, req.body.hashtags);
     res.sendStatus(200);
   } catch (error) {
-    console.log(error);
-    res.sendStatus(400);
+    res.status(400).jsonp(error);
+  }
+});
+
+router.get("/:id", async (req, res, next) => {
+  try {
+    res.jsonp(await Posts.findById(req.params.id));
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+router.get("/group/:groupat", async (req, res, next) => {
+  try {
+    res.jsonp(await Posts.findByGroupAt(req.params.groupat));
+  } catch (error) {
+    res.status(400).jsonp(error);
   }
 });
 

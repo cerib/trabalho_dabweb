@@ -18,6 +18,36 @@ module.exports.get = ammount => {
   }
 };
 
+module.exports.findById = id => {
+  return Post.findOne({ _id: id });
+};
+
 module.exports.groupPosts = at => {
+  return Post.find({ groupAt: at });
+};
+
+module.exports.deleteById = id => {
+  return Post.deleteOne({ _id: id });
+};
+
+module.exports.editById = async (id, text, hashtags) => {
+  let post = await Post.findById(id);
+  if (!post) {
+    throw { error: "post with id " + id + " does not exist" };
+  }
+  try {
+    if (text) {
+      post.text = text;
+    }
+    if (hashtags) {
+      post.hashtags = hashtags;
+    }
+    return post.save();
+  } catch (error) {
+    throw error;
+  }
+};
+
+module.exports.findByGroupAt = at => {
   return Post.find({ groupAt: at });
 };

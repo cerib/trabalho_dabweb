@@ -5,8 +5,8 @@ const Users = require("../controllers/users");
 const Posts = require("../controllers/posts");
 const Groups = require("../controllers/groups");
 // criar, retrieve e editar user
-// POST "/api/users/" (campos no body) v
-// GET "/api/users/:userat" v
+// POST "/api/users/" (campos no body)
+// GET "/api/users/:userat"
 // PUT "api/users/:userat"
 
 // visualizar perfil do user

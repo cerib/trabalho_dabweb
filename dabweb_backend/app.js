@@ -19,7 +19,6 @@ mongoose
 var groupsRouter = require("./routes/groups");
 var usersRouter = require("./routes/users");
 var postsRouter = require("./routes/posts");
-var postsRouter = require("./routes/groups");
 
 var app = express();
 
