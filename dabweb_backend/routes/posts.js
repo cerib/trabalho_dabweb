@@ -13,7 +13,15 @@ const Groups = require("../controllers/groups");
 
 router.post("/", async (req, res, next) => {
   try {
-    res.jsonp(await Posts.insertNew(req.body.groupAt, req.body));
+    let postRes = await Posts.insertNew(req.body.groupAt, req.body);
+    if (postRes.n === 0) {
+      res.status(400).jsonp({
+        error: `Group with at ${req.body.groupAt} probably does not exist`,
+        code: -1
+      });
+    } else {
+      res.jsonp(postRes);
+    }
   } catch (error) {
     res.status(400).jsonp(error);
   }
@@ -21,7 +29,8 @@ router.post("/", async (req, res, next) => {
 
 router.delete("/:postid", async (req, res, next) => {
   try {
-    res.jsonp(await Posts.deleteById(req.params.postid));
+    await Posts.deleteById(req.params.postid);
+    res.sendStatus(200);
   } catch (error) {
     res.status(400).jsonp(error);
   }
@@ -29,7 +38,7 @@ router.delete("/:postid", async (req, res, next) => {
 
 router.put("/:postid", async (req, res, next) => {
   try {
-    await Posts.editById(req.params.postid, req.body.text, req.body.hashtags);
+    await Posts.editById(req.params.postid, req.body.text, req.body.hashTags);
     res.sendStatus(200);
   } catch (error) {
     res.status(400).jsonp(error);

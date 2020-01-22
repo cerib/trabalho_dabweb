@@ -23,28 +23,51 @@ module.exports.findById = id => {
 
 module.exports.deleteById = id => {
   let objId = mongoose.Types.ObjectId(id);
-  return Group.updateOne(
-    { "posts._id": objId },
-    { $pull: { "posts._id": objId } }
-  );
+  Group.findOne({ "posts._id": objId }, (err, res) => {
+    res.posts.pull({ _id: id });
+    return res.save();
+  });
 };
 
-module.exports.editById = async (id, text, hashtags) => {
-  let post = await Post.findById(id);
+module.exports.editById = (id, text, hashTags) => {
+  let objId = mongoose.Types.ObjectId(id);
+  if (text && hashTags) {
+    return Group.updateOne(
+      { posts: { $elemMatch: { _id: objId } } },
+      { $set: { "posts.$.text": text, "posts.$.hashTags": hashTags } }
+    );
+  } else if (text) {
+    return Group.updateOne(
+      { posts: { $elemMatch: { _id: objId } } },
+      { $set: { "posts.$.text": text } }
+    );
+  } else if (hashTags) {
+    return Group.updateOne(
+      { posts: { $elemMatch: { _id: objId } } },
+      { $set: { "posts.$.hashTags": hashTags } }
+    );
+  }
+
+  /*   let post = await Group.aggregate([
+    { $unwind: "$posts" },
+    { $match: { "posts._id": objId } },
+    { $replaceWith: "$posts" }
+  ]);
   if (!post) {
     throw { error: "post with id " + id + " does not exist" };
   }
   try {
     if (text) {
-      post.text = text;
+      post[0].text = text;
     }
     if (hashtags) {
-      post.hashtags = hashtags;
+      post[0].hashtags = hashtags;
     }
-    return post.save();
+    console.log(post);
+    return post[0].save();
   } catch (error) {
     throw error;
-  }
+  } */
 };
 
 module.exports.findByGroupAt = groupAt => {
