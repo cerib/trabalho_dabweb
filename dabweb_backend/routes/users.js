@@ -22,7 +22,7 @@ router.post("/", async function(req, res, next) {
     if (group || user) {
       res.status(400).jsonp({
         error: "user or group with that at handle already exists",
-        code: -1 //codigo serve apenas para ver se o erro e do mongo ou e do "at", no front end faz-se "if(response.data.at)"
+        code: -1 //codigo serve apenas para ver se o erro e do mongo ou e do "at", no front end faz-se "if(response.data.code...)"
       });
     } else {
       //se sim, inserir utilizador e criar um grupo com at igual ao at do utilizador
