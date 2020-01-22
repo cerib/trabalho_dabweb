@@ -26,18 +26,33 @@ router.post("/", async function(req, res, next) {
       });
     } else {
       //se sim, inserir utilizador e criar um grupo com at igual ao at do utilizador
+
+      //confirma que o utilizador segue a sua propria pagina
+      //caso nao exista este array no body, cria-o
+      if (!req.body.following) {
+        req.body.following = [req.body.at];
+      } else if (!req.body.following.includes(req.body.at)) {
+        //caso o array esista mas este at nao esteja dentro, adiciona este ao array
+        req.body.following.push(req.body.at);
+      }
+
+      let user = await Users.insertNew(req.body);
+      user.password = "";
       let groupFields = {
         name: "Página de " + req.body.name,
         at_creator: req.body.at,
         at: req.body.at,
         members: [
-          { name: req.body.name, email: req.body.email, at: req.body.at }
+          {
+            _id: user._id,
+            name: req.body.name,
+            email: req.body.email,
+            at: req.body.at
+          }
         ],
         invited: [],
         public: true
       };
-      let user = await Users.insertNew(req.body);
-      user.password = "removed for security reasons";
       let group = await Groups.insertNew(groupFields);
       res.jsonp({ user, group });
     }

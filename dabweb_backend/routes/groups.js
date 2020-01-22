@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 const Groups = require("../controllers/groups");
-
+const Users = require("../controllers/users");
 // dar follow e unfollow a um grupo
 // POST /api/groups/follow/:groupat/:userat
 // DELETE /api/groups/unfollow/:groupat/:userat
@@ -16,6 +16,165 @@ const Groups = require("../controllers/groups");
 // convidar para grupo
 // POST /api/groups/:groupat/invite/:invitedat
 
+/* Follow a group */
+router.post("/follow/:groupat/:userat", async (req, res, next) => {
+  try {
+    let groupat = req.params.groupat;
+    let userat = req.params.userat;
+    let group = await Groups.findByAt(groupat);
+    let user = await Users.Search(userat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: "Group with at '" + groupat + "' does not exist",
+        code: -1
+      });
+    } else if (!user) {
+      res.status(400).jsonp({
+        error: "User with at '" + userat + "' does not exist",
+        code: -2
+      });
+    } else {
+      let groupRes = await Groups.addFollower(group._id, user);
+      let userRes = await Users.followGroup(user._id, group.at);
+      res.jsonp({ groupRes, userRes });
+    }
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
+/* Unfollow a group */
+router.delete("/unfollow/:groupat/:userat", async (req, res, next) => {
+  try {
+    let groupat = req.params.groupat;
+    let userat = req.params.userat;
+    let group = await Groups.findByAt(groupat);
+    let user = await Users.Search(userat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: "Group with at '" + groupat + "' does not exist",
+        code: -1
+      });
+    } else if (!user) {
+      res.status(400).jsonp({
+        error: "User with at '" + userat + "' does not exist",
+        code: -2
+      });
+    } else {
+      let groupRes = await Groups.removeFollower(group._id, user);
+      let userRes = await Users.unfollowGroup(user._id, group.at);
+      res.jsonp({ groupRes, userRes });
+    }
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
+/* Create group */
+router.post("/", async (req, res, next) => {
+  try {
+    let fields = ({ name, at_creator, at, public } = req.body);
+    let user = await Users.Search(at_creator);
+    if (!user) {
+      res.status(400).jsonp({
+        error: "User with at '" + at_creator + "' does not exist",
+        code: -1
+      });
+    } else {
+      let group = await Groups.findByAt(at);
+      if (group) {
+        res.status(400).jsonp({
+          error: "Group with at '" + at + "' already exists",
+          group: group,
+          code: -2
+        });
+      } else {
+        fields.members = [
+          {
+            _id: user._id,
+            name: user.name,
+            email: user.email,
+            at: user.at
+          }
+        ];
+        let newGroup = await Groups.insertNew(fields);
+        let userRes = await Users.followGroup(user._id, newGroup.at);
+        res.jsonp({ newGroup, userRes });
+      }
+    }
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* Delete Group */
+router.delete("/:groupat", (req, res, next) => {
+  res.status(403).jsonp({ error: "Resource not yet available" });
+});
+
+/* Edit Gtoup */
+router.put("/:groupat", async (req, res, next) => {
+  try {
+    let group = await Groups.findByAt(req.params.groupat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: `Group with at ${req.params.groupat} does not exist`,
+        code: -1
+      });
+    } else {
+      await Groups.editGroup(group, req.body.name, req.body.public);
+      res.sendStatus(200);
+    }
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* Get Group */
+router.get("/:groupat", async (req, res, next) => {
+  try {
+    let group = await Groups.findByAt(req.params.groupat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: `Group with at ${req.params.groupat} does not exist`,
+        code: -1
+      });
+    } else {
+      res.jsonp({ group });
+    }
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* Invite User To Group */
+router.post("/:groupat/invite/:invitedat", async (req, res, next) => {
+  try {
+    let group = await Groups.findByAt(req.params.groupat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: `Group with at ${req.params.groupat} does not exist`,
+        code: -1
+      });
+    } else {
+      let user = await Users.Search(req.params.invitedat);
+      if (!user) {
+        res.status(400).jsonp({
+          error: `User with at ${req.params.invitedat} does not exist`,
+          code: -2
+        });
+      } else {
+        let groupRes = await Groups.addInvited(group._id, user);
+        let userRes = await Users.addInvite(user._id, group.at);
+        res.jsonp({ groupRes, userRes });
+      }
+    }
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+/* 
 //route de teste insercao de grupo, com erros correctamente devolvidos na API
 router.post("/teste", async (req, res, next) => {
   try {
@@ -161,6 +320,6 @@ router.post("/addinvite", async (req, res, next) => {
     console.log(error);
     res.sendStatus(400);
   }
-});
+}); */
 
 module.exports = router;

@@ -45,6 +45,24 @@ module.exports.Search = at => {
   return User.findOne({ at: at });
 };
 
+module.exports.followGroup = (userId, groupAt) => {
+  return User.updateOne(
+    { _id: userId },
+    {
+      $addToSet: { following: groupAt },
+      $pull: { invites: groupAt }
+    }
+  );
+};
+
+module.exports.unfollowGroup = (userId, groupAt) => {
+  return User.updateOne({ _id: userId }, { $pull: { following: groupAt } });
+};
+
+module.exports.addInvite = (userId, groupAt) => {
+  return User.updateOne({ _id: userId }, { $addToSet: { invites: groupAt } });
+};
+
 /*
 module.exports.Search = query => {
   return User.find(

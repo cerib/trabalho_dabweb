@@ -6,7 +6,8 @@ const user = mongoose.Schema({
   email: { type: String, unique: true, required: true },
   at: { type: String, unique: true, required: true },
   password: { type: String, required: true },
-  following: [{ type: String }]
+  following: [{ type: String }],
+  invites: [{ type: String }]
 });
 user.plugin(uniqueValidator);
 

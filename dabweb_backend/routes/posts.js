@@ -9,7 +9,7 @@ const Posts = require("../controllers/posts");
 // DELETE /api/posts/:postid
 // PUT /api/posts/:postid
 // GET /api/posts/:postid
-// GET /api/posts/group/:groupat
+// GET /api/posts/groups/:groupat
 
 router.post("/", async (req, res, next) => {
   try {
@@ -44,7 +44,7 @@ router.get("/:id", async (req, res, next) => {
   }
 });
 
-router.get("/group/:groupat", async (req, res, next) => {
+router.get("/groups/:groupat", async (req, res, next) => {
   try {
     res.jsonp(await Posts.findByGroupAt(req.params.groupat));
   } catch (error) {
