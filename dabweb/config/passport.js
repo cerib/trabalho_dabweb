@@ -6,7 +6,7 @@ module.exports = function(passport) {
   passport.use(
     new LocalStrategy({ usernameField: "email" }, (email, password, done) => {
       axios
-        .get("http://localhost:5000/users/finduser/" + email)
+        .get("http://localhost:5000/api/users/email/" + email)
         .then(res => {
           let user = res.data;
           //Check email
@@ -37,7 +37,7 @@ module.exports = function(passport) {
 
   passport.deserializeUser((at, done) => {
     axios
-      .get("http://localhost:5000/users/" + at)
+      .get("http://localhost:5000/api/users/" + at)
       .then(res => {
         done(null, res.data);
       })

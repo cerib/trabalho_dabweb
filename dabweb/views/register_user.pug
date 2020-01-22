@@ -25,13 +25,13 @@ block content
         input.form-control(type="text" name="email" required)
     div.form-group
       label
-        b Password
-      input.form-control(type="password" name="password" required)
+        b @ Handle
+      if at
+        input.form-control.bg-warning(type="text" name="at" id="at" value=at required)
+      else
+        input.form-control(type="text" name="at" id="at" required)
     div.form-group
       label
-        b Curso
-      select.custom-select(name="course" required)
-        option(value="") Curso
-        each curso in cursos
-          option(value=curso name="course")= curso
+        b Password
+      input.form-control(type="password" name="password" required)
     button.btn.btn-primary(type="submit") Registar

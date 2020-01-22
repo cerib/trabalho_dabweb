@@ -12,13 +12,21 @@ router.get("*", function(req, res, next) {
 /* GET dashboard home. */
 router.get("/", ensureAuthenticated, async (req, res) => {
   try {
-    let response = await axios.get("http://localhost:5000/posts");
+    //posts de todos os grupos que o user segue
+    let response = await axios.post(
+      "http://localhost:5000/api/posts/groups/multiple",
+      {
+        groups: req.user.following
+      }
+    );
+    res.jsonp(response.data);
+    /* let response = await axios.get("http://localhost:5000/api/posts");
     res.render("dashboard_main", {
       email: req.user.email,
       posts: response.data
-    });
+    }); */
   } catch (error) {
-    console.log(error);
+    res.jsonp(error);
   }
 });
 

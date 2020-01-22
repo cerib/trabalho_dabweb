@@ -33,12 +33,9 @@ module.exports.editByAt = async (at, name, password) => {
 };
 
 module.exports.findByEmail = email => {
-  return User.find(
-    {
-      email: email
-    },
-    { password: 0 }
-  );
+  return User.findOne({
+    email: email
+  });
 };
 
 module.exports.Search = at => {

@@ -16,7 +16,8 @@ router.get("/", function(req, res, next) {
       message: "Registado com sucesso!"
     });
   } else if (req.isAuthenticated()) {
-    res.redirect("/dashboard");
+    res.jsonp({ authenticated: true });
+    //res.redirect("/dashboard");
   } else {
     res.render("index");
   }

@@ -58,6 +58,15 @@ module.exports.findByGroupAt = groupAt => {
   ]);
 };
 
+module.exports.findByGroupArray = groups => {
+  return Group.aggregate([
+    { $match: { at: { $in: groups } } },
+    { $project: { posts: 1 } },
+    { $unwind: "$posts" },
+    { $replaceWith: "$posts" }
+  ]);
+};
+
 /* module.exports.get = (ammount) => {
   //o id armazena o timestamp se for o predefinido do mongo
   //no nosso caso queremos que os novos posts estejam em cima por

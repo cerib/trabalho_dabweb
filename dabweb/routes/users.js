@@ -22,7 +22,7 @@ router.get("/register", function(req, res, next) {
     //and also helps keep code clean so I don't have to wrap everything else in an else{} block
     return;
   }
-  res.render("register_user", { cursos: ["MIEI"] });
+  res.render("register_user");
 });
 
 /* Insert user in database */
@@ -38,13 +38,19 @@ router.post("/register", (req, res, next) => {
         } else {
           //enviar tudo para o backend
           axios
-            .post("http://localhost:5000/users/register", {
+            .post("http://localhost:5000/api/users/", {
               name: req.body.name,
               email: req.body.email,
               password: hash,
-              course: req.body.course
+              at: req.body.at
             })
-            //receber respota do bakend (sucesso/insucesso) e agir de acordo com o resultado
+            .then(response => {
+              res.redirect("/?registered=true");
+            })
+            .catch(error => {
+              console.log(error);
+            });
+          /*//receber respota do backend (sucesso/insucesso) e agir de acordo com o resultado
             .then(resdata => {
               if (resdata.data.added == true) {
                 res.redirect("/?registered=true");
@@ -57,7 +63,7 @@ router.post("/register", (req, res, next) => {
                 });
               }
             })
-            .catch(e => console.error(e));
+            .catch(e => console.error(e));*/
         }
       });
     }

@@ -11,6 +11,15 @@ const Groups = require("../controllers/groups");
 // GET /api/posts/:postid
 // GET /api/posts/groups/:groupat
 
+router.post("/groups/multiple", async (req, res, next) => {
+  try {
+    let posts = await Posts.findByGroupArray(req.body.groups);
+    res.jsonp(posts);
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
 router.post("/", async (req, res, next) => {
   try {
     let postRes = await Posts.insertNew(req.body.groupAt, req.body);
