@@ -70,6 +70,15 @@ router.get("/:at", async (req, res, next) => {
   }
 });
 
+/* Search user by "email" field */
+router.get("/email/:email", async (req, res, next) => {
+  try {
+    res.jsonp(await Users.findByEmail(req.params.email));
+  } catch (e) {
+    res.status(400).jsonp(error);
+  }
+});
+
 //pode editar o nome e/ou a password apenas
 router.put("/:at", async (req, res, next) => {
   try {

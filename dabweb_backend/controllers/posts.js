@@ -47,31 +47,9 @@ module.exports.editById = (id, text, hashTags) => {
       { $set: { "posts.$.hashTags": hashTags } }
     );
   }
-
-  /*   let post = await Group.aggregate([
-    { $unwind: "$posts" },
-    { $match: { "posts._id": objId } },
-    { $replaceWith: "$posts" }
-  ]);
-  if (!post) {
-    throw { error: "post with id " + id + " does not exist" };
-  }
-  try {
-    if (text) {
-      post[0].text = text;
-    }
-    if (hashtags) {
-      post[0].hashtags = hashtags;
-    }
-    console.log(post);
-    return post[0].save();
-  } catch (error) {
-    throw error;
-  } */
 };
 
 module.exports.findByGroupAt = groupAt => {
-  //return Post.find({ groupAt: at });
   return Group.aggregate([
     { $match: { at: groupAt } },
     { $project: { posts: 1 } },
