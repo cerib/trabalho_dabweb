@@ -13,11 +13,8 @@ router.get("*", function(req, res, next) {
 router.get("/", ensureAuthenticated, async (req, res) => {
   try {
     //posts de todos os grupos que o user segue
-    let response = await axios.post(
-      "http://localhost:5000/api/posts/groups/multiple",
-      {
-        groups: req.user.following
-      }
+    let response = await axios.get(
+      `http://localhost:5000/api/users/${req.user.at}/feed`
     );
     res.jsonp(response.data);
     /* let response = await axios.get("http://localhost:5000/api/posts");

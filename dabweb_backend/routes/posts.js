@@ -12,14 +12,14 @@ const Groups = require("../controllers/groups");
 // GET /api/posts/groups/:groupat
 
 //apagar isto e fazer a route /api/users/:at/feed, ir buscar ao user a partir do at o array
-router.post("/groups/multiple", async (req, res, next) => {
+/* router.post("/groups/multiple", async (req, res, next) => {
   try {
     let posts = await Posts.findByGroupArray(req.body.groups);
     res.jsonp(posts);
   } catch (error) {
     res.jsonp(error);
   }
-});
+}); */
 
 router.post("/", async (req, res, next) => {
   try {

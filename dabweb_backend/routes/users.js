@@ -100,6 +100,17 @@ router.get("/:at/profile", async (req, res, next) => {
   }
 });
 
+/* Fetch posts from groups where user belongs */
+router.get("/:at/feed", async (req, res, next) => {
+  try {
+    let user = await Users.Search(req.params.at);
+    let posts = await Posts.findByGroupArray(user.following);
+    res.jsonp(posts);
+  } catch (e) {
+    res.status(400).jsonp(error);
+  }
+});
+
 /* router.get("/finduser/:email", async (req, res, next) => {
   let email = req.params.email;
   try {
