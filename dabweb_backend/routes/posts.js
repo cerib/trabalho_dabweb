@@ -2,7 +2,7 @@ var express = require("express");
 var router = express.Router();
 
 const Posts = require("../controllers/posts");
-
+const Groups = require("../controllers/groups");
 // criar post, apagar, editar, visualizar um, visualizar todos de um grupo
 
 // POST /api/posts/ (campos no body)
@@ -13,7 +13,7 @@ const Posts = require("../controllers/posts");
 
 router.post("/", async (req, res, next) => {
   try {
-    res.jsonp(await Posts.insertNew(req.body));
+    res.jsonp(await Posts.insertNew(req.body.groupAt, req.body));
   } catch (error) {
     res.status(400).jsonp(error);
   }
@@ -38,7 +38,8 @@ router.put("/:postid", async (req, res, next) => {
 
 router.get("/:id", async (req, res, next) => {
   try {
-    res.jsonp(await Posts.findById(req.params.id));
+    let post = await Posts.findById(req.params.id);
+    res.jsonp(post[0]);
   } catch (error) {
     res.status(400).jsonp(error);
   }

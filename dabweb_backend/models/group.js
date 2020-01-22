@@ -8,6 +8,17 @@ const UserSemPw = mongoose.Schema({
   at: { type: String, required: true }
 });
 
+const Post = mongoose.Schema(
+  {
+    author: { type: String, required: true },
+    authorAt: { type: String, required: true },
+    groupAt: { type: String, required: true },
+    text: { type: String },
+    hashTags: [{ type: String }]
+  },
+  { timestamps: true }
+);
+
 const group = mongoose.Schema(
   {
     name: { type: String, required: true },
@@ -15,6 +26,7 @@ const group = mongoose.Schema(
     at: { type: String, required: true, unique: true },
     members: [{ type: UserSemPw }],
     invited: [{ type: UserSemPw }],
+    posts: [Post],
     public: { type: Boolean, required: true }
   },
   { timestamps: true }
