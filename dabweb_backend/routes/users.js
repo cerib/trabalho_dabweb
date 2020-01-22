@@ -93,7 +93,7 @@ router.put("/:at", async (req, res, next) => {
 router.get("/:at/profile", async (req, res, next) => {
   try {
     let user = await Users.Search(req.params.at);
-    let posts = await Posts.groupPosts(req.params.at);
+    let posts = await Posts.findByGroupAt(req.params.at);
     res.jsonp({ user, posts });
   } catch (e) {
     res.status(400).jsonp(error);
