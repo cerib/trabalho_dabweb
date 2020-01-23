@@ -31,7 +31,8 @@ block authenticatedcontent
                 a(href="/users/" + post.authorAt) @#{post.authorAt}
               if post.authorAt != post.groupAt
                 span(style="font-size: 70%;")  &#9654; 
-                span #{post.groupAt}
+                span
+                  a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text
