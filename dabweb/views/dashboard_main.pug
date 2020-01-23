@@ -7,11 +7,18 @@ block scripts
   script(src="/javascripts/dashboard.js")
 
 block authenticatedcontent
-  form(action="/dashboard/posts/new" method="POST" id="new-post-form")
+  form(action="/dashboard/posts/" method="POST" id="new-post-form")
     div.form-group
       label
         b Conteúdo da Publicação
       textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
+    div.form-group
+      label
+        b Grupo onde publicar
+      select.custom-select(name="groupAt" required)
+          option(value=ownGroup) No meu perfil
+          each groupAt in groups
+            option(value=groupAt name="group")= groupAt
     button.btn.btn-primary(type="submit") Enviar
   .container-fluid(id="posts-container")
     each post in posts

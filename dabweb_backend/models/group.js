@@ -14,7 +14,7 @@ const Post = mongoose.Schema(
     authorAt: { type: String, required: true },
     groupAt: { type: String, required: true },
     text: { type: String },
-    hashTags: [{ type: String }]
+    hashTags: Array
   },
   { timestamps: true }
 );

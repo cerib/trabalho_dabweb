@@ -4,6 +4,7 @@ const Post = require("../models/post");
 
 module.exports.insertNew = (groupAt, fields) => {
   let post = new Post(fields);
+  console.log(post);
   return Group.updateOne(
     { at: groupAt },
     {

@@ -6,6 +6,7 @@ const { ensureAuthenticated } = require("../config/auth");
 
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
+  res.locals.email = req.user ? req.user.email : null;
   next();
 });
 
@@ -16,7 +17,11 @@ router.get("/", ensureAuthenticated, async (req, res) => {
     let response = await axios.get(
       `http://localhost:5000/api/users/${req.user.at}/feed`
     );
-    res.jsonp(response.data);
+    res.render("dashboard_main", {
+      posts: response.data,
+      ownGroup: req.user.following[0],
+      groups: req.user.following.slice(1)
+    });
     /* let response = await axios.get("http://localhost:5000/api/posts");
     res.render("dashboard_main", {
       email: req.user.email,
@@ -27,16 +32,18 @@ router.get("/", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post("/posts/new", ensureAuthenticated, (req, res) => {
+router.post("/posts/", ensureAuthenticated, (req, res) => {
   let maxPostLength = 1000;
   let textContent = req.body.text.slice(0, maxPostLength);
   let hashTags = req.body.text.match(/(#[A-z0-9]+)/g);
+  console.log(req.body);
+  console.log(hashTags);
   axios
-    .post("http://localhost:5000/posts/new", {
+    .post("http://localhost:5000/api/posts/", {
       text: textContent,
-      email: req.user.email,
-      name: req.user.name,
-      course: req.user.course,
+      authorAt: req.user.at,
+      author: req.user.name,
+      groupAt: req.body.groupAt,
       hashTags: hashTags
     })
     .then(response => res.redirect("/dashboard"))
