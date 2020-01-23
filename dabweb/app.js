@@ -9,7 +9,6 @@ const passport = require("passport");
 require("./config/passport")(passport);
 
 var indexRouter = require("./routes/index");
-var dashboardRouter = require("./routes/dashboard");
 var usersRouter = require("./routes/users");
 var groupsRouter = require("./routes/groups");
 
@@ -39,7 +38,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.use("/users", usersRouter);
-app.use("/dashboard", dashboardRouter);
 app.use("/groups", groupsRouter);
 app.use("/", indexRouter);
 

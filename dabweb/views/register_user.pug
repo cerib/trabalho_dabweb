@@ -4,34 +4,38 @@ block scripts
   script(src="/javascripts/register.js")
 
 block content
-  h1 Registar na Aplicação
-  if message
-    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg")
-      =message
-  form(action="/users/register" method="POST")
-    div.form-group
-      label
-        b Nome
-      if name
-        input.form-control(type="text" name="name" autocomplete="off" value=name required)
-      else
-        input.form-control(type="text" name="name" autocomplete="off" required)
-    div.form-group
-      label
-        b Email
-      if email
-        input.form-control.bg-warning(type="text" name="email" id="email-field" value=email required)
-      else
-        input.form-control(type="text" name="email" required)
-    div.form-group
-      label
-        b @ Handle
-      if at
-        input.form-control.bg-warning(type="text" name="at" id="at" value=at required)
-      else
-        input.form-control(type="text" name="at" id="at" required)
-    div.form-group
-      label
-        b Password
-      input.form-control(type="password" name="password" required)
-    button.btn.btn-primary(type="submit") Registar
+  .container
+    h1.text-center.mt-5 Registar na Aplicação
+    if message
+      div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg")
+        =message
+    form(action="/register" method="POST")
+      .form-group
+        label
+          b Nome
+        if name
+          input.form-control(type="text" name="name" autocomplete="off" value=name required)
+        else
+          input.form-control(type="text" name="name" autocomplete="off" required)
+      div.form-group
+        label
+          b Email
+        if email
+          input.form-control(type="email" name="email" id="email-field" value=email required)
+        else
+          input.form-control(type="email" name="email" required)
+      div.form-group
+        label
+          b Handle
+        .input-group.mb-3
+          .input-group-prepend
+              span#basic-addon1.input-group-text @
+          if at
+            input.form-control(type="text" name="at" id="at" value=at required)
+          else
+            input.form-control(type="text" name="at" id="at" required)
+      div.form-group
+        label
+          b Password
+        input.form-control(type="password" name="password" required)
+      button.btn.btn-primary(type="submit") Registar

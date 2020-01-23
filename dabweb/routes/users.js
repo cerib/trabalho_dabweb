@@ -9,6 +9,14 @@ router.get("*", function(req, res, next) {
   next();
 });
 
+// GET "/users/:at" - ver página de utilizador
+
+// GET "/users/edit" - render da pagina de editar utilizador
+// POST "/users/edit" - editar utilizador
+
+// POST "/users/:at/follow" - seguir utilizador
+// POST "/users/:at/unfollow" - deixar de seguir utilizador
+
 /* Redirect to home page */
 router.get("/", (req, res, next) => {
   res.redirect("/");

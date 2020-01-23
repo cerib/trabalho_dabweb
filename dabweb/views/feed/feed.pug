@@ -1,0 +1,31 @@
+extends ../sidebar
+
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/dashboard.css')
+
+block scripts
+  script(src="/javascripts/dashboard.js")
+
+block authenticatedcontent
+  form(action="/dashboard/posts/" method="POST" id="new-post-form")
+    div.form-group
+      label
+        b Conteúdo da Publicação
+      textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
+    button.btn.btn-primary(type="submit") Publicar no perfil
+  .container-fluid(id="posts-container")
+    each post in posts
+      .card.mt-1(class="post")
+        if post.image
+          img.card-img-top(src='...' alt='...')
+        .card-body
+          h5.card-title.text-muted(style="font-size: small;")
+              span #{post.author} 
+                a(href="/users/" + post.authorAt) @#{post.authorAt}
+              if post.authorAt != post.groupAt
+                span(style="font-size: 70%;")  &#9654; 
+                span
+                  a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
+          hr
+          p.card-text.mt-3(style="font-size: 115%;")
+            =post.text

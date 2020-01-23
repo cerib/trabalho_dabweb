@@ -9,6 +9,15 @@ router.get("*", function(req, res, next) {
   next();
 });
 
+// GET /groups/:at - ver pagina de grupo
+
+// POST /groups/ - criar novo grupo
+// GET /groups/:at/edit - render pagina editar grupo
+// POST /groups/:at/ - editar grupo (campos no body)
+
+// POST /groups/:at/follow - seguir grupo
+// POST /groups/:at/unfollow - para de seguir grupo
+
 /* GET dashboard home. */
 router.get("/", ensureAuthenticated, async (req, res) => {
   res.render("groups/groups_index");

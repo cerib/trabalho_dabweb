@@ -18,11 +18,17 @@ router.post("/", async function(req, res, next) {
     //verificar se os at estao disponiveis para o grupo e para o utilizador
     let group = await Groups.findByAt(req.body.at);
     let user = await Users.Search(req.body.at);
+    let userEmail = await Users.findByEmail(req.body.email);
     //se nao, enviar erro
     if (group || user) {
       res.status(400).jsonp({
         error: "user or group with that at handle already exists",
         code: -1 //codigo serve apenas para ver se o erro e do mongo ou e do "at", no front end faz-se "if(response.data.code...)"
+      });
+    } else if (userEmail) {
+      res.status(400).jsonp({
+        error: "taht email already is in use",
+        code: -2
       });
     } else {
       //se sim, inserir utilizador e criar um grupo com at igual ao at do utilizador
