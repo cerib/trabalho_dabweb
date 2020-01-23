@@ -36,21 +36,24 @@ router.post("/posts/", ensureAuthenticated, (req, res) => {
   let maxPostLength = 1000;
   let textContent = req.body.text.slice(0, maxPostLength);
   let hashTags = req.body.text.match(/(#[A-z0-9]+)/g);
-  console.log(req.body);
-  console.log(hashTags);
-  axios
-    .post("http://localhost:5000/api/posts/", {
-      text: textContent,
-      authorAt: req.user.at,
-      author: req.user.name,
-      groupAt: req.body.groupAt,
-      hashTags: hashTags
-    })
-    .then(response => res.redirect("/dashboard"))
-    .catch(e => {
-      console.error(e);
-      res.redirect("/");
-    });
+  //verificar se pode postar nesse grupo
+  if (!req.user.following.includes(req.body.groupAt)) {
+    res.jsonp({ error: "You can't post in groups you don't follow" });
+  } else {
+    axios
+      .post("http://localhost:5000/api/posts/", {
+        text: textContent,
+        authorAt: req.user.at,
+        author: req.user.name,
+        groupAt: req.body.groupAt,
+        hashTags: hashTags
+      })
+      .then(response => res.redirect("/dashboard"))
+      .catch(e => {
+        console.error(e);
+        res.redirect("/");
+      });
+  }
 });
 
 router.get("/search", ensureAuthenticated, async (req, res) => {
