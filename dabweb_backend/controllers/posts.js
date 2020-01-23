@@ -68,6 +68,14 @@ module.exports.findByGroupArray = groups => {
   ]);
 };
 
+module.exports.findByHashTag = hashtag => {
+  return Group.aggregate([
+    { $match: { "posts.hashTags": hashtag } },
+    { $unwind: "$posts" },
+    { $replaceWith: "$posts" }
+  ]);
+};
+
 /* module.exports.get = (ammount) => {
   //o id armazena o timestamp se for o predefinido do mongo
   //no nosso caso queremos que os novos posts estejam em cima por

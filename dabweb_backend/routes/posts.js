@@ -55,6 +55,15 @@ router.put("/:postid", async (req, res, next) => {
   }
 });
 
+router.get("/hashtags", async (req, res, next) => {
+  try {
+    let hashtag = "#" + req.query.hashtag;
+    res.jsonp(await Posts.findByHashTag(hashtag));
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
 router.get("/:id", async (req, res, next) => {
   try {
     let post = await Posts.findById(req.params.id);

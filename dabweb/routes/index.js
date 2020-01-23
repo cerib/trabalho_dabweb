@@ -107,4 +107,35 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
   }
 });
 
+router.get("/search", ensureAuthenticated, async (req, res) => {
+  try {
+    let searchterm = req.query.searchterm;
+    console.log(searchterm.trim("#"));
+    if (searchterm.length > 2) {
+      if (searchterm[0] === "@") {
+        // procura por grupos e utilizadores atraves do at
+        let response = await axios.get(
+          `http://localhost:5000/api/groups/${searchterm.slice(1)}`
+        );
+        res.jsonp(response.data);
+      } else if (searchterm[0] === "#") {
+        // procura por posts com a hashtag
+        let response = await axios.get(
+          `http://localhost:5000/api/posts/hashtags?hashtag=${searchterm.replace(
+            /^#+/,
+            ""
+          )}`
+        );
+        res.jsonp(response.data);
+      } else {
+        // Procura por utilizadores atraves do nome
+      }
+    } else {
+      res.redirect("/feed");
+    }
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
 module.exports = router;
