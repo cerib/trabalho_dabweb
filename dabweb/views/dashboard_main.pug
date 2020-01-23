@@ -26,9 +26,12 @@ block authenticatedcontent
         if post.image
           img.card-img-top(src='...' alt='...')
         .card-body
-          h5.card-title 
-            =post.name
-          h6.card-subtitle.mb-2.text-muted 
-            =post.email
-          p.card-text
+          h5.card-title.text-muted(style="font-size: small;")
+              span #{post.author} 
+                a(href="/users/" + post.authorAt) @#{post.authorAt}
+              if post.authorAt != post.groupAt
+                span(style="font-size: 70%;")  &#9654; 
+                span #{post.groupAt}
+          hr
+          p.card-text.mt-3(style="font-size: 115%;")
             =post.text
