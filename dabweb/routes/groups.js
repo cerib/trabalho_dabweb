@@ -6,6 +6,10 @@ const { ensureAuthenticated } = require("../config/auth");
 
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
+  if (req.user) {
+    res.locals.user = req.user;
+    delete res.locals.user.password;
+  }
   next();
 });
 
