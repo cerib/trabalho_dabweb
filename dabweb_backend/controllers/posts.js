@@ -4,7 +4,6 @@ const Post = require("../models/post");
 
 module.exports.insertNew = (groupAt, fields) => {
   let post = new Post(fields);
-  console.log(post);
   return Group.updateOne(
     { at: groupAt },
     {
@@ -70,8 +69,8 @@ module.exports.findByGroupArray = groups => {
 
 module.exports.findByHashTag = hashtag => {
   return Group.aggregate([
-    { $match: { "posts.hashTags": hashtag } },
     { $unwind: "$posts" },
+    { $match: { "posts.hashTags": hashtag } },
     { $replaceWith: "$posts" }
   ]);
 };

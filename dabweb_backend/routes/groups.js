@@ -132,7 +132,6 @@ router.put("/:groupat", async (req, res, next) => {
 
 /* Get Group */
 router.get("/:groupat", async (req, res, next) => {
-  console.log(req.params.groupat);
   try {
     let group = await Groups.findByAt(req.params.groupat);
     if (!group) {
@@ -141,7 +140,7 @@ router.get("/:groupat", async (req, res, next) => {
         code: -1
       });
     } else {
-      res.jsonp({ group });
+      res.jsonp(group);
     }
   } catch (error) {
     res.status(400).jsonp(error);

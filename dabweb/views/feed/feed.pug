@@ -7,7 +7,7 @@ block scripts
   script(src="/javascripts/dashboard.js")
 
 block authenticatedcontent
-  form(action="/dashboard/posts/" method="POST" id="new-post-form")
+  form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
       label
         b Conteúdo da Publicação
