@@ -9,8 +9,10 @@ const { ensureAuthenticated } = require("../config/auth");
 
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
-  //res.locals.user = req.user;
-  //delete res.locals.user.password;
+  if (req.user) {
+    res.locals.user = req.user;
+    delete res.locals.user.password;
+  }
   next();
 });
 
@@ -101,8 +103,6 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
     let response = await axios.get(
       `http://localhost:5000/api/users/${req.user.at}/feed`
     );
-    res.locals.user = req.user;
-    delete res.locals.user.password;
     res.render("./feed/feed", {
       posts: response.data
     });
