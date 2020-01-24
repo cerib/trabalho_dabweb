@@ -9,6 +9,8 @@ router.get("*", function(req, res, next) {
   next();
 });
 
+module.exports = router;
+
 // GET "/users/:at" - ver página de utilizador
 
 // GET "/users/edit" - render da pagina de editar utilizador
@@ -17,12 +19,12 @@ router.get("*", function(req, res, next) {
 // POST "/users/:at/follow" - seguir utilizador
 // POST "/users/:at/unfollow" - deixar de seguir utilizador
 
-/* Redirect to home page */
+/*
 router.get("/", (req, res, next) => {
   res.redirect("/");
 });
 
-/* GET users register page */
+
 router.get("/register", function(req, res, next) {
   if (req.isAuthenticated()) {
     res.redirect("/dashboard");
@@ -33,7 +35,7 @@ router.get("/register", function(req, res, next) {
   res.render("register_user");
 });
 
-/* Insert user in database */
+
 router.post("/register", (req, res, next) => {
   //hash password
   bcrypt.genSalt(10, (err, salt) => {
@@ -58,7 +60,7 @@ router.post("/register", (req, res, next) => {
             .catch(error => {
               console.log(error);
             });
-          /*//receber respota do backend (sucesso/insucesso) e agir de acordo com o resultado
+          //receber respota do backend (sucesso/insucesso) e agir de acordo com o resultado
             .then(resdata => {
               if (resdata.data.added == true) {
                 res.redirect("/?registered=true");
@@ -71,7 +73,7 @@ router.post("/register", (req, res, next) => {
                 });
               }
             })
-            .catch(e => console.error(e));*/
+            .catch(e => console.error(e));
         }
       });
     }
@@ -89,5 +91,4 @@ router.get("/logout", (req, res, next) => {
   req.logout();
   res.redirect("/");
 });
-
-module.exports = router;
+*/
