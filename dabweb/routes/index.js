@@ -121,6 +121,47 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         let response = await axios.get(
           `http://localhost:5000/api/groups/${searchterm.slice(1)}`
         );
+        let joined = [];
+        let following = [];
+        let invited = [];
+        let otherusers = [];
+        let publicgroups = [];
+        response.data.forEach(result => {
+          //retira o proprio user
+          if (req.user.at != result.at) {
+            //se for um grupo
+            if (result.at == result.at_creator) {
+              //e o user estiver invited
+              if (result.invited.includes(req.user.at)) {
+                invited = [...invited, result];
+              } else if (result.members.includes(req.user.at)) {
+                //e o user pertencer ao grupo
+                joined = [...joined, result];
+              } else {
+                //grupo publico
+                publicgroups = [...publicgroups, result];
+              }
+              //se nao for um grupo é um usergroup
+            } else {
+              if (result.members.includes(req.user.at)) {
+                //alguem a quem o user já deu follow
+                following = [...following, result];
+              } else {
+                otherusers = [...otherusers, result]; //alguém que o user ainda nao seguiu
+              }
+            }
+          }
+        });
+        console.log("Grupos a que o user pertence\n");
+        console.log(joined);
+        console.log("Grupos para os quais o user está convidado\n");
+        console.log(invited);
+        console.log("Grupos publicos\n");
+        console.log(publicgroups);
+        console.log("Users que o user segue\n");
+        console.log(following);
+        console.log("Users que o user não segue\n");
+        console.log(otherusers);
         res.jsonp(response.data);
       } else if (searchterm[0] === "#") {
         // procura por posts com a hashtag (remove o # porque se nao nao funciona)
