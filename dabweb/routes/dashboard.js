@@ -22,11 +22,6 @@ router.get("/", ensureAuthenticated, async (req, res) => {
       ownGroup: req.user.following[0],
       groups: req.user.following.slice(1)
     });
-    /* let response = await axios.get("http://localhost:5000/api/posts");
-    res.render("dashboard_main", {
-      email: req.user.email,
-      posts: response.data
-    }); */
   } catch (error) {
     res.jsonp(error);
   }

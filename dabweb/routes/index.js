@@ -123,14 +123,17 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
       } else if (searchterm[0] === "#") {
         // procura por posts com a hashtag
         let response = await axios.get(
-          `http://localhost:5000/api/posts/hashtags?hashtag=${searchterm.replace(
+          `http://localhost:5000/api/posts/hashtags/${searchterm.replace(
             /^#+/,
             ""
           )}`
         );
         res.jsonp(response.data);
       } else {
-        // Procura por utilizadores atraves do nome
+        let response = await axios.get(
+          `http://localhost:5000/api/groups/${searchterm.slice(1)}`
+        );
+        res.jsonp(response.data);
       }
     } else {
       res.redirect("/feed");
