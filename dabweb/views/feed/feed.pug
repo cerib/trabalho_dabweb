@@ -4,9 +4,32 @@ block stylesheets
   link(rel='stylesheet', href='/stylesheets/dashboard.css')
 
 block scripts
-  script(src="/javascripts/dashboard.js")
+  script(src="/javascripts/feed.js")
 
 block authenticatedcontent
+  // Button trigger modal
+  button.btn.btn-primary(type='button' data-toggle='modal' data-target='#exampleModalScrollable')
+    | Launch demo modal
+  // Modal
+  #exampleModalScrollable.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalScrollableTitle' aria-hidden='true')
+    .modal-dialog.modal-dialog-scrollable(role='document')
+      .modal-content
+        .modal-header
+          h5#exampleModalScrollableTitle.card-title.text-muted(style="font-size: small;")
+            span
+              p#author-name-modal
+                a#author-link-modal(href="#")
+            div#group-div-modal(style="display:none")
+              span(style="font-size: 70%;")  &#9654; 
+              span(id="groupat-span")
+                a.text-info#group-link-modal(href="#" style="text-decoration: none;")
+          button.close(type='button' data-dismiss='modal' aria-label='Close')
+            span(aria-hidden='true') &times;
+        .modal-body
+        .modal-footer
+          button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+          button.btn.btn-primary(type='button') Save changes
+
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
       label
@@ -20,12 +43,15 @@ block authenticatedcontent
           img.card-img-top(src='...' alt='...')
         .card-body
           h5.card-title.text-muted(style="font-size: small;")
-              span #{post.author} 
+              span(data-author-name=post.author) #{post.author} 
                 a(href="/users/" + post.authorAt) @#{post.authorAt}
               if post.authorAt != post.groupAt
                 span(style="font-size: 70%;")  &#9654; 
                 span
                   a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
+              if post.authorAt == user.at
+                span
+                  a.text-info.float-right.edit-link#edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable' data-author-name=post.author data-author-at=post.authorAt data-group-at=post.groupAt) editar
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text

@@ -13,6 +13,12 @@ router.get("*", function(req, res, next) {
   next();
 });
 
+// POST /posts/:groupat - postar um post
+// GET /posts/:id/edit - pag de ver edit post
+// POST /posts/:id/edit - editar um post
+// POST /posts/:id/delete - apagar um post
+// GET /posts/:id - visao geral do post
+
 router.post("/:groupat", ensureAuthenticated, async (req, res) => {
   if (!req.user.following.includes(req.params.groupat)) {
     res.jsonp({ error: "You can't post in a group you don't follow" });
@@ -45,9 +51,11 @@ router.post("/:groupat", ensureAuthenticated, async (req, res) => {
   }
 });
 
-// POST /posts/:groupat - postar um post
-// POST /posts/:id/edit - editar um post
-// POST /posts/:id/delete - apagar um post
-// GET /posts/:id - visao geral do post
+router.post("/posts/:id/edit", ensureAuthenticated, async (req, res) => {
+  try {
+  } catch (error) {
+    res.send(400).jsonp(error);
+  }
+});
 
 module.exports = router;
