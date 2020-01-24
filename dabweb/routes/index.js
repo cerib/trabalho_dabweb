@@ -133,10 +133,8 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         res.header("Content-Type", "application/json");
         res.send(JSON.stringify(response.data, null, 4));
       } else {
-        let response = await axios.get(
-          `http://localhost:5000/api/groups/${searchterm.slice(1)}`
-        );
-        res.jsonp(response.data);
+        //ta mal nao estamos a pesquisar grupos aqui
+        res.jsonp({ error: "Search without @ or # not available yet" });
       }
     } else {
       res.redirect("/feed");
