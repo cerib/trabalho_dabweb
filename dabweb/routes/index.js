@@ -121,7 +121,7 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         );
         res.jsonp(response.data);
       } else if (searchterm[0] === "#") {
-        // procura por posts com a hashtag, mas remove o # porque se nao nao funciona
+        // procura por posts com a hashtag (remove o # porque se nao nao funciona)
         let response = await axios.get(
           `http://localhost:5000/api/posts/hashtags/${searchterm.replace(
             /^#+/,
