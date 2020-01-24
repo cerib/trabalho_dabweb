@@ -1,18 +1,14 @@
-nav.navbar.navbar-expand-lg.navbar-light.bg-light
+nav#navbarblue.navbar.navbar-expand-lg.navbar-dark.bg-primary
   a.navbar-brand(href="/") DabWeb
   button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
     span.navbar-toggler-icon
   div#navbarSupportedContent.collapse.navbar-collapse
     ul.navbar-nav.mr-auto
-      li.nav-item
-        a.nav-link(href="/") Home
-      if !authenticated
-        li.nav-item
-          a.nav-link(href="/users/register") Registar
+      
     if authenticated
       form.form-inline.my-2.my-lg-0.mx-auto(action="/search" method="GET")
         input.form-control.mr-sm-2(type='search' placeholder='Search Users' aria-label='Search' name="searchterm")
-        button.btn.btn-outline-success.my-2.my-sm-0(type='submit') Search
+        button.btn.btn-outline-light.my-2.my-sm-0(type='submit') Search
       if email
         div.nav-item.mr-2
           =email
@@ -21,4 +17,4 @@ nav.navbar.navbar-expand-lg.navbar-light.bg-light
       form.form-inline.my-2.my-lg-0(action="/login" method="POST")
         input.form-control.mr-sm-2(type="email" name="email" placeholder="Email" aria-label="email")
         input.form-control.mr-sm-2(type="password" name="password" placeholder="Password" aria-label="password")
-        button.btn.btn-outline-success.my-2.my-sm-0(type="submit") Login
+        button.btn.btn-outline-light.my-2.my-sm-0(type="submit") Login
