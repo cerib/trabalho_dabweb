@@ -2,11 +2,11 @@ extends layout
 block content
   div.d-flex
     // Sidebar
-    .bg-light.border-right
-      .list-group.list-group-flush
-        a.list-group-item.list-group-item-action.bg-light(href='/dashboard') Frontpage
-        a.list-group-item.list-group-item-action.bg-light(href='/profile') Profile
-        a.list-group-item.list-group-item-action.bg-light(href='/groups') Groups
+    .sidebar
+      .list-group.list-group-flush.text-center
+        a.list-group-item.list-group-item-action.custom-item(href='/feed') Feed
+        a.list-group-item.list-group-item-action.custom-item(href='/profile')= user.name
+        a.list-group-item.list-group-item-action.custom-item(href='/groups') Groups
     //conteudo da pagina
     .container-fluid
       block authenticatedcontent

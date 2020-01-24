@@ -99,6 +99,8 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
     let response = await axios.get(
       `http://localhost:5000/api/users/${req.user.at}/feed`
     );
+    res.locals.user = req.user;
+    delete res.locals.user.password;
     res.render("./feed/feed", {
       posts: response.data
     });

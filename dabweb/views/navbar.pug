@@ -1,4 +1,4 @@
-nav#navbarblue.navbar.navbar-expand-lg.navbar-dark.bg-primary
+nav.navbar.navbar-expand-lg.navbar-dark.bg-primary
   a.navbar-brand(href="/") DabWeb
   button.navbar-toggler(type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation")
     span.navbar-toggler-icon
@@ -12,7 +12,7 @@ nav#navbarblue.navbar.navbar-expand-lg.navbar-dark.bg-primary
       if email
         div.nav-item.mr-2
           =email
-      button.btn.btn-outline-info(type="button" onclick="window.location.href = '/users/logout';") Logout
+      button.btn.btn-outline-light(type="button" onclick="window.location.href = '/users/logout';") Logout
     else
       form.form-inline.my-2.my-lg-0(action="/login" method="POST")
         input.form-control.mr-sm-2(type="email" name="email" placeholder="Email" aria-label="email")
