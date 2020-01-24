@@ -26,9 +26,10 @@ block authenticatedcontent
           button.close(type='button' data-dismiss='modal' aria-label='Close')
             span(aria-hidden='true') &times;
         .modal-body
+          textarea.form-control(type="text" id="post-text-modal" maxlength="1000" name="text" autocomplete="off" required)
         .modal-footer
           button.btn.btn-secondary(type='button' data-dismiss='modal') Close
-          button.btn.btn-primary(type='button') Save changes
+          button.btn.btn-primary(type='button' onclick="submitEdit()") Save changes
 
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
@@ -51,7 +52,7 @@ block authenticatedcontent
                   a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
               if post.authorAt == user.at
                 span
-                  a.text-info.float-right.edit-link#edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable' data-author-name=post.author data-author-at=post.authorAt data-group-at=post.groupAt) editar
+                  a.text-info.float-right.edit-link#edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable' data-post-id=post._id data-author-name=post.author data-author-at=post.authorAt data-group-at=post.groupAt) editar
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text

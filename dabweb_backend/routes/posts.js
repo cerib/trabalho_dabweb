@@ -48,7 +48,8 @@ router.delete("/:postid", async (req, res, next) => {
 
 router.put("/:postid", async (req, res, next) => {
   try {
-    await Posts.editById(req.params.postid, req.body.text, req.body.hashTags);
+    console.log(req.body, req.params.postid);
+    //await Posts.editById(req.params.postid, req.body.text, req.body.hashTags);
     res.sendStatus(200);
   } catch (error) {
     res.status(400).jsonp(error);

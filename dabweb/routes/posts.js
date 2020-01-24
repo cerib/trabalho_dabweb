@@ -51,8 +51,15 @@ router.post("/:groupat", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post("/posts/:id/edit", ensureAuthenticated, async (req, res) => {
+router.post("/:id/edit", ensureAuthenticated, async (req, res) => {
   try {
+    let response = await axios.put(
+      "http://localhost:5000/api/posts/" + req.params.id,
+      {
+        text: req.body.text,
+        hashTags: req.body.text.match(/(#[A-z0-9]+)/g)
+      }
+    );
   } catch (error) {
     res.send(400).jsonp(error);
   }
