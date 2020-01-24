@@ -11,6 +11,7 @@ require("./config/passport")(passport);
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var groupsRouter = require("./routes/groups");
+var postsRouter = require("./routes/posts");
 
 var app = express();
 
@@ -37,6 +38,7 @@ app.use(
 app.use(passport.initialize());
 app.use(passport.session());
 
+app.use("/posts", postsRouter);
 app.use("/users", usersRouter);
 app.use("/groups", groupsRouter);
 app.use("/", indexRouter);

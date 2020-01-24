@@ -9,6 +9,8 @@ const { ensureAuthenticated } = require("../config/auth");
 
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
+  //res.locals.user = req.user;
+  //delete res.locals.user.password;
   next();
 });
 
@@ -128,7 +130,8 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
             ""
           )}`
         );
-        res.jsonp(response.data);
+        res.header("Content-Type", "application/json");
+        res.send(JSON.stringify(response.data, null, 4));
       } else {
         let response = await axios.get(
           `http://localhost:5000/api/groups/${searchterm.slice(1)}`
