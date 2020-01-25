@@ -1,0 +1,49 @@
+extends ../sidebar
+
+block content
+  .container
+    h1.text-center.mt-5 Criar Grupo
+    if message
+      div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg")
+        =message
+    form(action="../groups/create" method="POST")
+      .form-group
+        label
+          b Nome do Grupo
+        if name
+          input.form-control(type="text" name="name" autocomplete="off" value=name required)
+        else
+          input.form-control(type="text" name="name" autocomplete="off" required)
+      div.form-group
+        label
+          b Handle do Grupo
+        .input-group.mb-3
+          .input-group-prepend
+              span#basic-addon1.input-group-text @
+          if at
+            input.form-control(type="text" name="at" id="at" value=at required)
+          else
+            input.form-control(type="text" name="at" id="at" required)
+
+      div.form-group
+        b.text-center.mt-5 Visibilidade do Grupo
+        if public 
+          p
+          label
+            | Público
+          input.form-control(type="radio" name="public" value=1 required)
+          label
+             | Privado
+          input.form-control(type="radio" name="public" value=0 required) 
+        else
+          p
+          label
+            | Público
+          input.form-control(type="radio" name="public" value=1 required)
+          label
+             | Privado
+          input.form-control(type="radio" name="public" value=0 required)
+          
+
+      div.form-group
+      button.btn.btn-primary(type="submit") Registar
