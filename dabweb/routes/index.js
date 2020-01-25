@@ -92,7 +92,7 @@ router.post("/login", (req, res, next) => {
   })(req, res, next);
 });
 
-router.post("/logout", (req, res, next) => {
+router.get("/logout", (req, res, next) => {
   req.logout();
   res.redirect("/");
 });
@@ -114,13 +114,15 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
 router.get("/search", ensureAuthenticated, async (req, res) => {
   try {
     let searchterm = req.query.searchterm;
-    console.log(searchterm.trim("#"));
     if (searchterm.length > 2) {
       if (searchterm[0] === "@") {
         // procura por grupos e utilizadores atraves do at
         let response = await axios.get(
-          `http://localhost:5000/api/groups/${searchterm.slice(1)}`
+          `http://localhost:5000/api/groups/search/${searchterm.slice(1)}/${
+            req.user.at
+          }`
         );
+        console.log(response.data);
         let joined = [];
         let following = [];
         let invited = [];

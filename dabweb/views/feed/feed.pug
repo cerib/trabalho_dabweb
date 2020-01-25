@@ -25,8 +25,11 @@ block authenticatedcontent
         .modal-body
           textarea.form-control(type="text" id="post-text-modal" maxlength="1000" name="text" autocomplete="off" required)
         .modal-footer
-          button.btn.btn-secondary(type='button' data-dismiss='modal') Close
-          button.btn.btn-primary(type='button' onclick="submitEdit()") Save changes
+          form.form-inline(action="/posts/" + user.at method="POST" id="new-post-form")
+            .form-group
+              button.btn.btn-danger.mr-5(type='button' data-dismiss='modal') Apagar
+            .form-group
+              button.btn.btn-primary.ml-4(type='button' onclick="submitEdit()") Guardar
 
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
