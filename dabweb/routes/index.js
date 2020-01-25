@@ -127,16 +127,18 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         //type = 2 - user pertence ao grupo
         //type = 3 - user nao pertence mas grupo é publico
         //type = 4 - user segue user
-        let type;
-        console.log(response.data);
+        let type = 0;
+        //console.log(response.data);
+        //console.log(response.data.members.some(m => m.at == req.user.at));
         //retira o proprio user
         if (req.user.at != response.data.at) {
           //se for um grupo
           if (response.data.at != response.data.at_creator) {
             //e o user estiver invited
-            if (response.data.invited.includes(req.user.at)) {
+            if (response.data.invited.some(i => i.at == req.user.at)) {
               type = 1;
-            } else if (response.data.members.includes(req.user.at)) {
+              //group.members.some(m => m.at === req.params.userat
+            } else if (response.data.members.some(m => m.at == req.user.at)) {
               //e o user pertencer ao grupo
               type = 2;
             } else {
@@ -145,28 +147,22 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
             }
             //se nao for um grupo é um usergroup
           } else {
-            if (response.data.members.includes(req.user.at)) {
+            if (response.data.members.some(m => m.at == req.user.at)) {
               //alguem a quem o user já deu follow
               type = 4;
             } else {
+              //ja nao preciso deste caso mas vou deixar estar anyways
               type = 0; //alguém que o user ainda nao seguiu
             }
           }
         } else {
           response.data = "";
         }
+        //console.log("tipo: ");
 
-        console.log("Grupos a que o user pertence\n");
-        console.log(joined);
-        console.log("Grupos para os quais o user está convidado\n");
-        console.log(invited);
-        console.log("Grupos publicos\n");
-        console.log(publicgroups);
-        console.log("Users que o user segue\n");
-        console.log(following);
-        console.log("Users que o user não segue\n");
-        console.log(otherusers);
-        res.jsonp(response.data);
+        //console.log(type);
+
+        res.render("searchresults", { result: response.data, type: type });
       } else if (searchterm[0] === "#") {
         // procura por posts com a hashtag (remove o # porque se nao nao funciona)
         let response = await axios.get(

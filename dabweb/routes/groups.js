@@ -19,8 +19,8 @@ router.get("*", function(req, res, next) {
 // GET /groups/:at/edit - render pagina editar grupo
 // POST /groups/:at/ - editar grupo (campos no body)
 
-// POST /groups/:at/follow - seguir grupo
-// POST /groups/:at/unfollow - para de seguir grupo
+// GET /groups/:at/follow - seguir grupo
+// GET /groups/:at/unfollow - para de seguir grupo
 
 /* GET dashboard home. */
 router.get("/", ensureAuthenticated, async (req, res) => {

@@ -8,25 +8,41 @@ block scripts
 
 block authenticatedcontent
   .mt-5
-    .card-columns
-      each user in users
-        .card.mb-3(style='max-width: 340px;')
-          .row.no-gutters
-            .col-md-4
-              if user.picture
-                img.card-img(src=user.picture alt='profile picture')
-              else
-                img.card-img(src="https://i.imgur.com/mCHMpLT.png" alt='profile picture')
-            .col-md-8
-              .card-body
-                h5.card-title= user.name
-                p.card-text= user.email
-                p.card-text.text-muted= user.course
-            form.p-2(action="/users/invitetogroup?invited-email=" + user.email method="POST")
-              div.form-group
-                label
-                  b Convidar para grupo
-                select.custom-select(name="course" required)
-                  option(value="") Grupos
-                  option(value=curso name="course") AAA
-                button.btn.btn-primary.mt-2(type="submit") Convidar
+  if result == ""
+    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg") O handle pesquisado não existe
+  if type == 1
+    .card.w-50
+      .card-body
+        h5.card-title= result.name
+        p.card-text @#{result.at} - Foste convidado para este grupo
+        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-success.float-right.ml-2(href='/groups/'+result.at+'/follow') Aceitar
+        a.btn.btn-danger.float-right(href='/groups/'+result.at+'/unfollow') Recusar
+  else if type == 2
+    .card.w-50
+      .card-body
+        h5.card-title= result.name
+        p.card-text @#{result.at}
+        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-danger.float-right(href='/groups/'+result.at+'/unfollow') Sair
+  else if type == 3
+    .card.w-50
+      .card-body
+        h5.card-title= result.name
+        p.card-text @#{result.at}
+        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-success.float-right.ml-2(href='/groups/'+result.at+'/follow') Aderir
+  else if type == 4
+    .card.w-50
+      .card-body
+        h5.card-title= result.name
+        p.card-text @#{result.at}
+        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-danger.float-right(href='/groups/'+result.at+'/unfollow') Não seguir
+  else if type == 0
+    .card.w-50
+      .card-body
+        h5.card-title= result.name
+        p.card-text @#{result.at}
+        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-success.float-right.ml-2(href='/groups/'+result.at+'/follow') Seguir
