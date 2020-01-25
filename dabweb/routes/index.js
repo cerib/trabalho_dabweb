@@ -126,6 +126,7 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         let invited = [];
         let otherusers = [];
         let publicgroups = [];
+        console.log(response.data);
         response.data.forEach(result => {
           //retira o proprio user
           if (req.user.at != result.at) {
