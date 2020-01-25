@@ -25,9 +25,9 @@ block authenticatedcontent
         .modal-body
           textarea.form-control(type="text" id="post-text-modal" maxlength="1000" name="text" autocomplete="off" required)
         .modal-footer
-          form.form-inline(action="/posts/" + user.at method="POST" id="new-post-form")
+          .form-inline(action="#" method="POST" id="delete-post-form")
             .form-group
-              button.btn.btn-danger.mr-5(type='button' data-dismiss='modal') Apagar
+              button.btn.btn-danger.mr-5(type='button' onclick="submitDelete()") Apagar
             .form-group
               button.btn.btn-primary.ml-4(type='button' onclick="submitEdit()") Guardar
 

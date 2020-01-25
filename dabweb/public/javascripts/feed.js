@@ -38,10 +38,24 @@ $(document).on("click", ".edit-link", function(e) {
   }
 
   $("#post-text-modal").val(postText);
+  $("#delete-post-form")[0].action = `/posts/${postId}/delete`;
 });
 
 reloadPage = function() {
   document.location.reload(true);
+};
+
+submitDelete = function() {
+  if (confirm("Apagar o post? Esta acção não pode ser cancelada.")) {
+    var json = JSON.stringify({});
+    var xhr = new XMLHttpRequest();
+    xhr.open("POST", `/posts/${postId}/delete`, true);
+    xhr.setRequestHeader("Content-Type", "application/json");
+    xhr.onreadystatechange = reloadPage;
+    xhr.send(json);
+  } else {
+    reloadPage();
+  }
 };
 
 submitEdit = function() {

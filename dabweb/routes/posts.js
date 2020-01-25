@@ -14,7 +14,7 @@ router.get("*", function(req, res, next) {
 });
 
 // POST /posts/:groupat - postar um post
-// GET /posts/:id/edit - pag de ver edit post
+// GET /posts/:id/edit - pag de ver edit post - nao esta feita porque temos modal
 // POST /posts/:id/edit - editar um post
 // POST /posts/:id/delete - apagar um post
 // GET /posts/:id - visao geral do post
@@ -68,6 +68,25 @@ router.post("/:id/edit", ensureAuthenticated, async (req, res) => {
         }
       );
       res.sendStatus(200);
+    }
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
+});
+
+router.post("/:id/delete", ensureAuthenticated, async (req, res) => {
+  try {
+    //verifica se e o autor do post
+    let post = await axios.get(
+      "http://localhost:5000/api/posts/" + req.params.id
+    );
+    if (post.data.authorAt !== req.user.at) {
+      res.status(400).jsonp({ error: "You can't delete someone else's post" });
+    } else {
+      let response = await axios.delete(
+        "http://localhost:5000/api/posts/" + req.params.id
+      );
+      res.redirect(req.get("referer"));
     }
   } catch (error) {
     res.status(400).jsonp(error);
