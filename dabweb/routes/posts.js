@@ -53,15 +53,24 @@ router.post("/:groupat", ensureAuthenticated, async (req, res) => {
 
 router.post("/:id/edit", ensureAuthenticated, async (req, res) => {
   try {
-    let response = await axios.put(
-      "http://localhost:5000/api/posts/" + req.params.id,
-      {
-        text: req.body.text,
-        hashTags: req.body.text.match(/(#[A-z0-9]+)/g)
-      }
+    //verifica se e o autor do post
+    let post = await axios.get(
+      "http://localhost:5000/api/posts/" + req.params.id
     );
+    if (post.data.authorAt !== req.user.at) {
+      res.status(400).jsonp({ error: "You can't edit someone else's post" });
+    } else {
+      let response = await axios.put(
+        "http://localhost:5000/api/posts/" + req.params.id,
+        {
+          text: req.body.text,
+          hashTags: req.body.text.match(/(#[A-z0-9]+)/g)
+        }
+      );
+      res.sendStatus(200);
+    }
   } catch (error) {
-    res.send(400).jsonp(error);
+    res.status(400).jsonp(error);
   }
 });
 

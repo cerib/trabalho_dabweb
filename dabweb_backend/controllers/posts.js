@@ -63,7 +63,8 @@ module.exports.findByGroupArray = groups => {
     { $match: { at: { $in: groups } } },
     { $project: { posts: 1 } },
     { $unwind: "$posts" },
-    { $replaceWith: "$posts" }
+    { $replaceWith: "$posts" },
+    { $sort: { createdAt: -1 } }
   ]);
 };
 

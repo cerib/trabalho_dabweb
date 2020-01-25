@@ -11,14 +11,25 @@ window.onload = function() {
   }
 };
 
+//CODIGO QUE COLOCA ELEMENTOS NA MODAL
+var postId = null;
 $(document).on("click", ".edit-link", function(e) {
-  var authorName = $("#edit-link").data("author-name");
-  var authorAt = $("#edit-link").data("author-at");
-  var groupAt = $("#edit-link").data("group-at");
+  // 2 - post id
+  // 3 - author name
+  // 4 - author at
+  // 5 - group at
+  postId = e.originalEvent.toElement.previousSibling.attributes[2].textContent; //variavel global
+  var authorName =
+    e.originalEvent.toElement.previousSibling.attributes[3].textContent;
+  var authorAt =
+    e.originalEvent.toElement.previousSibling.attributes[4].textContent;
+  var groupAt =
+    e.originalEvent.toElement.previousSibling.attributes[5].textContent;
   var postText = $(this)
     .closest("div")
     .find("p")[0].textContent;
-  authorAtHtml = `<a href="/users/${authorAt}">@${authorAt}</a>`;
+  var authorAtHtml = `<a href="/users/${authorAt}">@${authorAt}</a>`;
+
   $("#author-name-modal")[0].innerHTML = authorName + " " + authorAtHtml; // = authorName + " ";
 
   if (groupAt !== authorAt) {
@@ -29,6 +40,10 @@ $(document).on("click", ".edit-link", function(e) {
   $("#post-text-modal").val(postText);
 });
 
+reloadPage = function() {
+  document.location.reload(true);
+};
+
 submitEdit = function() {
   var data = {
     text: $("#post-text-modal").val()
@@ -36,7 +51,8 @@ submitEdit = function() {
 
   var json = JSON.stringify(data);
   var xhr = new XMLHttpRequest();
-  xhr.open("POST", `/posts/${$("#edit-link").data("post-id")}/edit`);
+  xhr.open("POST", `/posts/${postId}/edit`, true);
   xhr.setRequestHeader("Content-Type", "application/json");
+  xhr.onreadystatechange = reloadPage;
   xhr.send(json);
 };
