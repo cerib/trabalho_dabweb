@@ -75,7 +75,8 @@ router.get("/:id", async (req, res, next) => {
 
 router.get("/groups/:groupat", async (req, res, next) => {
   try {
-    res.jsonp(await Posts.findByGroupAt(req.params.groupat));
+    let posts = await Posts.findByGroupAt(req.params.groupat);
+    res.jsonp(posts);
   } catch (error) {
     res.status(400).jsonp(error);
   }

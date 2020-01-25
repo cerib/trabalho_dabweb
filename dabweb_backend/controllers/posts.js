@@ -51,10 +51,11 @@ module.exports.editById = (id, text, hashTags) => {
 
 module.exports.findByGroupAt = groupAt => {
   return Group.aggregate([
-    { $match: { at: groupAt } },
+    { $match: { at: "" + groupAt } },
     { $project: { posts: 1 } },
     { $unwind: "$posts" },
-    { $replaceWith: "$posts" }
+    { $replaceWith: "$posts" },
+    { $sort: { createdAt: -1 } }
   ]);
 };
 

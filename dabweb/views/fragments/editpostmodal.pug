@@ -1,0 +1,23 @@
+// Modal
+#exampleModalScrollable.modal.fade(tabindex='-1' role='dialog' aria-labelledby='exampleModalScrollableTitle' aria-hidden='true')
+  .modal-dialog.modal-dialog-scrollable(role='document')
+    .modal-content
+      .modal-header
+        h5#exampleModalScrollableTitle.card-title.text-muted(style="font-size: small;")
+          span
+            p#author-name-modal
+              a#author-link-modal(href="#")
+          div#group-div-modal(style="display:none")
+            span(style="font-size: 70%;")  &#9654; 
+            span(id="groupat-span")
+              a.text-info#group-link-modal(href="#" style="text-decoration: none;")
+        button.close(type='button' data-dismiss='modal' aria-label='Close')
+          span(aria-hidden='true') &times;
+      .modal-body
+        textarea.form-control(type="text" id="post-text-modal" maxlength="1000" name="text" autocomplete="off" required)
+      .modal-footer
+        .form-inline(action="#" method="POST" id="delete-post-form")
+          .form-group
+            button.btn.btn-danger.mr-5(type='button' onclick="submitDelete()") Apagar
+          .form-group
+            button.btn.btn-primary.ml-4(type='button' onclick="submitEdit()") Guardar

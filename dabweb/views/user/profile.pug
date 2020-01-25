@@ -7,6 +7,7 @@ block scripts
   script(src="/javascripts/feed.js")
 
 block authenticatedcontent
+
   include ../fragments/editpostmodal
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group

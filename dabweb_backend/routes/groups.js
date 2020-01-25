@@ -144,7 +144,8 @@ router.get("/search/:groupat/:userat", async (req, res, next) => {
       //"some" pesquisa se uma propriedade com o valor x existe numa lista de objectos
       //neste caso, se o grupo for privado e o utilizador nao for membro, rejeita a pesquisa
       group.public === false &&
-      !group.members.some(m => m.at === req.params.userat)
+      !group.members.some(m => m.at === req.params.userat) &&
+      !group.invited.some(m => m.at === req.params.userat)
     ) {
       res.status(400).jsonp({
         error: `Group with at ${req.params.groupat} is private`,

@@ -4,6 +4,8 @@ var axios = require("axios");
 var bcrypt = require("bcryptjs");
 const passport = require("passport");
 
+const { ensureAuthenticated } = require("../config/auth");
+
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
   if (req.user) {
@@ -11,6 +13,19 @@ router.get("*", function(req, res, next) {
     delete res.locals.user.password;
   }
   next();
+});
+
+router.get("/:at", ensureAuthenticated, async (req, res) => {
+  try {
+    let response = await axios.get(
+      "http://localhost:5000/api/posts/groups/" + req.params.at
+    );
+    res.render("user/profile", {
+      posts: response.data
+    });
+  } catch (error) {
+    res.status(400).jsonp(error);
+  }
 });
 
 module.exports = router;
