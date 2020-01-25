@@ -122,39 +122,40 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
             req.user.at
           }`
         );
+        //type = 0 - user nao segue user
+        //type = 1 - user foi convidado
+        //type = 2 - user pertence ao grupo
+        //type = 3 - user nao pertence mas grupo é publico
+        //type = 4 - user segue user
+        let type;
         console.log(response.data);
-        let joined = [];
-        let following = [];
-        let invited = [];
-        let otherusers = [];
-        let publicgroups = [];
-        console.log(response.data);
-        response.data.forEach(result => {
-          //retira o proprio user
-          if (req.user.at != result.at) {
-            //se for um grupo
-            if (result.at == result.at_creator) {
-              //e o user estiver invited
-              if (result.invited.includes(req.user.at)) {
-                invited = [...invited, result];
-              } else if (result.members.includes(req.user.at)) {
-                //e o user pertencer ao grupo
-                joined = [...joined, result];
-              } else {
-                //grupo publico
-                publicgroups = [...publicgroups, result];
-              }
-              //se nao for um grupo é um usergroup
+        //retira o proprio user
+        if (req.user.at != response.data.at) {
+          //se for um grupo
+          if (response.data.at != response.data.at_creator) {
+            //e o user estiver invited
+            if (response.data.invited.includes(req.user.at)) {
+              type = 1;
+            } else if (response.data.members.includes(req.user.at)) {
+              //e o user pertencer ao grupo
+              type = 2;
             } else {
-              if (result.members.includes(req.user.at)) {
-                //alguem a quem o user já deu follow
-                following = [...following, result];
-              } else {
-                otherusers = [...otherusers, result]; //alguém que o user ainda nao seguiu
-              }
+              //grupo publico
+              type = 3;
+            }
+            //se nao for um grupo é um usergroup
+          } else {
+            if (response.data.members.includes(req.user.at)) {
+              //alguem a quem o user já deu follow
+              type = 4;
+            } else {
+              type = 0; //alguém que o user ainda nao seguiu
             }
           }
-        });
+        } else {
+          response.data = "";
+        }
+
         console.log("Grupos a que o user pertence\n");
         console.log(joined);
         console.log("Grupos para os quais o user está convidado\n");
