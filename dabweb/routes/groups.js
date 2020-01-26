@@ -78,20 +78,24 @@ router.post("/create", ensureAuthenticated, (req, res, next) => {
 });
 
 // GET /groups/:at - ver pagina de grupo
-
-// GET /groups/:at - ver pagina de grupo
-router.get("/:at", ensureAuthenticated, async (req, res, next) => {
+router.get("/:groupat/", ensureAuthenticated, async (req, res) => {
   try {
-    //request ao backend de groups/at
     let response = await axios.get(
-      `http://localhost:5000/api/groups/${req.url.split("/").pop()}`
+      "http://localhost:5000/api/groups/" + req.params.groupat
     );
-    res.locals.user = req.user;
-    delete res.locals.user.password;
-    //A pagina vai ser basicamente a mesma coisa
-    res.render("./feed/feed", {
-      posts: response.data.group.posts
-    });
+    let public = response.data.public;
+    if (!public && !req.user.following.includes(req.params.groupat)) {
+      res.jsonp({ error: "You don't have permissions to view this group" });
+    } else {
+      res.render("groups/group_view", {
+        group: response.data,
+        isownprofile: response.data.at_creator === req.user.at,
+        canpost:
+          req.user.following.includes(req.params.groupat) &&
+          (response.data.at !== response.data.at_creator ||
+            response.data.at_creator === req.user.at)
+      });
+    }
   } catch (error) {
     res.jsonp(error);
   }
@@ -105,10 +109,12 @@ router.get("/:at", ensureAuthenticated, async (req, res, next) => {
 // GET /groups/:at/unfollow - para de seguir grupo/ rejeita convite
 
 /*
+router.get("", async (req, res, next) => {
   try {
   } catch (error) {
     res.jsonp(error);
   }
+});
 */
 
 /* Accept invite/ follow public group */

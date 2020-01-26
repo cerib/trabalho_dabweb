@@ -23,6 +23,7 @@ const Groups = require("../controllers/groups");
 
 router.post("/", async (req, res, next) => {
   try {
+    console.log(req.body);
     let postRes = await Posts.insertNew(req.body.groupAt, req.body);
     if (postRes.n === 0) {
       res.status(400).jsonp({

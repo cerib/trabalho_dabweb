@@ -1,12 +1,23 @@
 extends layout
 block content
-  div.d-flex
+  div.d-flex(style="")
     // Sidebar
     .sidebar
       .list-group.list-group-flush.text-center
         a.list-group-item.list-group-item-action.custom-item(href='/feed') Feed
         a.list-group-item.list-group-item-action.custom-item(href="/users/" + user.at)= user.name
         a.list-group-item.list-group-item-action.custom-item(href='/groups') Grupos
+        br
+        if group
+          //meter aqui a pagina actual a negrito com style="font-weight:bold"
+          a.list-group-item.list-group-item-action.custom-item(href='/groups/' + group.at style="font-weight:bold") @#{group.at}
+          each groupat in user.following
+            if groupat != group.at
+              a.list-group-item.list-group-item-action.custom-item(href='/groups/' + groupat) @#{groupat}
+        else
+          each groupat in user.following
+            a.list-group-item.list-group-item-action.custom-item(href='/groups/' + groupat) @#{groupat}
+        
     //conteudo da pagina
     .container-fluid
       block authenticatedcontent
