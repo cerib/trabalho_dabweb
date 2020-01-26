@@ -53,7 +53,10 @@ module.exports.followGroup = (userId, groupAt) => {
 };
 
 module.exports.unfollowGroup = (userId, groupAt) => {
-  return User.updateOne({ _id: userId }, { $pull: { following: groupAt } });
+  return User.updateOne(
+    { _id: userId },
+    { $pull: { following: groupAt, invites: groupAt } }
+  );
 };
 
 module.exports.addInvite = (userId, groupAt) => {

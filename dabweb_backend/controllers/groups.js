@@ -64,7 +64,7 @@ module.exports.removeFollower = (groupId, user) => {
   };
   return Group.updateOne(
     { _id: groupId },
-    { $pull: { members: userToRemove } }
+    { $pull: { members: userToRemove, invited: userToRemove } }
   );
 };
 
@@ -76,4 +76,51 @@ module.exports.editGroup = (group, newName, public) => {
     group.public = public;
   }
   return group.save();
+};
+
+module.exports.userGroupsInfo = user => {
+  return Group.aggregate([
+    {
+      $addFields: {
+        membercount: { $size: "$members" }
+      }
+    },
+    {
+      $facet: {
+        following: [
+          { $match: { at: { $in: user.following } } },
+          { $project: { posts: 0, members: 0 } }
+        ],
+        invites: [
+          { $match: { at: { $in: user.invites } } },
+          { $project: { posts: 0, members: 0 } }
+        ]
+      }
+    }
+  ]);
+
+  let a = [
+    {
+      $addFields: {
+        membercount: { $size: "$members" }
+      }
+    },
+    {
+      $facet: {
+        created: [
+          { $match: { at: { $in: ["csr1"] } } },
+          { $project: { posts: 0, members: 0 } }
+        ],
+        followed: [
+          { $match: { at: { $in: ["jcn"] } } },
+          { $project: { posts: 0, members: 0 } }
+        ],
+        invited: [
+          { $match: { at: { $in: ["cesarfans"] } } },
+          { $project: { posts: 0, members: 0 } }
+        ]
+      }
+    }
+  ];
+  //return Group.find
 };

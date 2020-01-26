@@ -14,6 +14,8 @@ const Users = require("../controllers/users");
 // GET /api/groups/:groupat
 // GET /api/groups/search/:groupat/:userat
 
+// GET /api/groups/usergroups/:userat - devolve os grupos relevantes para o utilizador, sem a parte dos posts
+
 // convidar para grupo
 // POST /api/groups/:groupat/invite/:invitedat
 
@@ -200,6 +202,17 @@ router.post("/:groupat/invite/:invitedat", async (req, res, next) => {
     }
   } catch (error) {
     res.status(400).jsonp(error);
+  }
+});
+
+/* Get User Relevant Group Info */
+router.get("/usergroups/:userat", async (req, res, next) => {
+  try {
+    let user = await Users.Search(req.params.userat);
+    let groups = await Groups.userGroupsInfo(user);
+    res.jsonp(groups[0]);
+  } catch (error) {
+    res.jsonp(error);
   }
 });
 
