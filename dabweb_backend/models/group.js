@@ -14,7 +14,8 @@ const File = new mongoose.Schema({
   originalname: String,
   mimetype: String,
   size: Number,
-  userAt: String
+  userAt: String,
+  path: String
 });
 
 const Post = mongoose.Schema(

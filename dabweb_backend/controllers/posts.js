@@ -34,6 +34,16 @@ module.exports.addFile = async (postId, fileFields) => {
   );
 };
 
+module.exports.getFileById = fileId => {
+  let objId = mongoose.Types.ObjectId(fileId);
+  return Group.aggregate([
+    { $unwind: "$posts" },
+    { $unwind: "$posts.files" },
+    { $match: { "posts.files._id": objId } },
+    { $replaceWith: "$posts.files" }
+  ]);
+};
+
 module.exports.findById = id => {
   let objId = mongoose.Types.ObjectId(id);
   return Group.aggregate([

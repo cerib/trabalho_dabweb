@@ -6,7 +6,8 @@ var ficheiroSchema = new mongoose.Schema({
   originalname: String,
   mimetype: String,
   size: Number,
-  userAt: String
+  userAt: String,
+  path: String
 });
 
 module.exports = mongoose.model("file", ficheiroSchema);

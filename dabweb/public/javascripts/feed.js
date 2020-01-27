@@ -71,3 +71,15 @@ submitEdit = function() {
   xhr.onreadystatechange = reloadPage;
   xhr.send(json);
 };
+
+showFicheiro = function(f) {
+  if (f.mimetype == "image/png")
+    var ficheiro = $('<img src="/ficheiros/' + f.name + '" width="80%"/>');
+  else var ficheiro = $("<p>" + JSON.stringify(f) + "</p>");
+  var download = $(
+    '<div><a href="/download/' + f.name + '">Download</a></div>'
+  );
+  $("#display").empty();
+  $("#display").append(ficheiro, download);
+  $("#display").modal();
+};
