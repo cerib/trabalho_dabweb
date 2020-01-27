@@ -3,6 +3,9 @@ var router = express.Router();
 
 const axios = require("axios");
 const { ensureAuthenticated } = require("../config/auth");
+const fs = require("fs-extra");
+var multer = require("multer");
+var upload = multer({ dest: "uploads/" });
 
 router.get("*", function(req, res, next) {
   res.locals.authenticated = req.user ? true : false;
@@ -93,9 +96,53 @@ router.post("/:id/delete", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.post("/:postid/uploadfile", ensureAuthenticated, async (req, res) => {
-  console.log(req.body);
-  console.log(req);
-});
+router.post(
+  "/:postid/uploadfile",
+  upload.single("file"),
+  ensureAuthenticated,
+  async (req, res) => {
+    try {
+      //verifica se e o autor do post
+      let post = await axios.get(
+        "http://localhost:5000/api/posts/" + req.params.postid
+      );
+
+      if (post.data.authorAt !== req.user.at) {
+        res.status(400).jsonp({ error: "You can't edit someone else's post" });
+      } else {
+        let oldPath = __dirname + "/../" + req.file.path;
+        let newPath = `${__dirname}/../public/ficheiros/${req.user.at}/${req.file.filename}`;
+
+        if (
+          !fs.pathExistsSync(`${__dirname}/../public/ficheiros/${req.user.at}/`)
+        ) {
+          fs.mkdirsSync(`${__dirname}/../public/ficheiros/${req.user.at}/`);
+        }
+
+        fs.rename(oldPath, newPath, function(err) {
+          if (err) {
+            throw err;
+          }
+        });
+
+        let fileFields = {
+          date: new Date(),
+          name: req.file.filename,
+          originalname: req.file.originalname,
+          mimetype: req.file.mimetype,
+          size: req.file.size,
+          userAt: req.body.userat
+        };
+        let response = await axios.post(
+          `http://localhost:5000/api/files/addfile/${req.params.postid}`,
+          fileFields
+        );
+        res.redirect(req.get("referer"));
+      }
+    } catch (error) {
+      res.status(400).jsonp(error);
+    }
+  }
+);
 
 module.exports = router;

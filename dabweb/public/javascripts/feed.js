@@ -39,9 +39,7 @@ $(document).on("click", ".edit-link", function(e) {
 
   $("#post-text-modal").val(postText);
   $("#delete-post-form")[0].action = `/posts/${postId}/delete`;
-  $(
-    "#upload-file-form"
-  )[0].action = `http://localhost:5000/api/files/addfile/${postId}`;
+  $("#upload-file-form")[0].action = `/posts/${postId}/uploadfile`;
 });
 
 reloadPage = function() {
