@@ -178,8 +178,10 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
             ""
           )}`
         );
-        res.header("Content-Type", "application/json");
-        res.send(JSON.stringify(response.data, null, 4));
+        //res.header("Content-Type", "application/json");
+        //res.send(JSON.stringify(response.data, null, 4));
+        console.log(response.data);
+        res.render("searchresultsht", { result: response.data });
       } else {
         //ta mal nao estamos a pesquisar grupos aqui
         res.jsonp({ error: "Search without @ or # not available yet" });
