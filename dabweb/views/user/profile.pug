@@ -9,12 +9,13 @@ block scripts
 block authenticatedcontent
 
   include ../fragments/editpostmodal
-  form(action="/posts/" + user.at method="POST" id="new-post-form")
-    div.form-group
-      label
-        b Conteúdo da Publicação
-      textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
-    button.btn.btn-primary(type="submit") Publicar no perfil
+  if user.at == at
+    form(action="/posts/" + user.at method="POST" id="new-post-form")
+      div.form-group
+        label
+          b Conteúdo da Publicação
+        textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
+      button.btn.btn-primary(type="submit") Publicar no perfil
   .container-fluid(id="posts-container")
     each post in posts
       .card.mt-1(class="post")
