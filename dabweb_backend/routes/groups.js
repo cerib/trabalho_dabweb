@@ -16,8 +16,10 @@ const Users = require("../controllers/users");
 
 // GET /api/groups/usergroups/:userat - devolve os grupos relevantes para o utilizador, sem a parte dos posts
 
-// convidar para grupo
+// convidar para grupo, aceitar, rejeitar convite para grupo
 // POST /api/groups/:groupat/invite/:invitedat
+// POST /api/groups/:groupat/invite/:invitedat/accept
+// POST /api/groups/:groupat/invite/:invitedat/reject
 
 /* Follow a group */
 router.post("/follow/:groupat/:userat", async (req, res, next) => {
@@ -178,6 +180,17 @@ router.get("/:groupat", async (req, res, next) => {
   }
 });
 
+/* Get User Relevant Group Info */
+router.get("/usergroups/:userat", async (req, res, next) => {
+  try {
+    let user = await Users.Search(req.params.userat);
+    let groups = await Groups.userGroupsInfo(user);
+    res.jsonp(groups[0]);
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
 /* Invite User To Group */
 router.post("/:groupat/invite/:invitedat", async (req, res, next) => {
   try {
@@ -205,12 +218,55 @@ router.post("/:groupat/invite/:invitedat", async (req, res, next) => {
   }
 });
 
-/* Get User Relevant Group Info */
-router.get("/usergroups/:userat", async (req, res, next) => {
+/* Accept Invite */
+/* router.post("/:groupat/invite/:invitedat/accept", async (req, res, next) => {
   try {
-    let user = await Users.Search(req.params.userat);
-    let groups = await Groups.userGroupsInfo(user);
-    res.jsonp(groups[0]);
+    let groupat = req.params.groupat;
+    let userat = req.params.userat;
+    let group = await Groups.findByAt(groupat);
+    let user = await Users.Search(userat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: "Group with at '" + groupat + "' does not exist",
+        code: -1
+      });
+    } else if (!user) {
+      res.status(400).jsonp({
+        error: "User with at '" + userat + "' does not exist",
+        code: -2
+      });
+    } else {
+      let groupRes = await Groups.addFollower(group._id, user);
+      let userRes = await Users.followGroup(user._id, group.at);
+      res.jsonp({ groupRes, userRes });
+    }
+  } catch (error) {
+    res.jsonp(error);
+  }
+}); */
+
+/* Reject Invite */
+router.post("/:groupat/invite/:invitedat/reject", async (req, res, next) => {
+  try {
+    let groupat = req.params.groupat;
+    let userat = req.params.invitedat;
+    let group = await Groups.findByAt(groupat);
+    let user = await Users.Search(userat);
+    if (!group) {
+      res.status(400).jsonp({
+        error: "Group with at '" + groupat + "' does not exist",
+        code: -1
+      });
+    } else if (!user) {
+      res.status(400).jsonp({
+        error: "User with at '" + userat + "' does not exist",
+        code: -2
+      });
+    } else {
+      let groupRes = await Groups.removeInvite(group._id, user);
+      let userRes = await Users.removeInvite(user._id, group.at);
+      res.jsonp({ groupRes, userRes });
+    }
   } catch (error) {
     res.jsonp(error);
   }

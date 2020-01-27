@@ -68,6 +68,19 @@ module.exports.removeFollower = (groupId, user) => {
   );
 };
 
+module.exports.removeInvite = (groupId, user) => {
+  let userToRemove = {
+    _id: user._id,
+    name: user.name,
+    email: user.email,
+    at: user.at
+  };
+  return Group.updateOne(
+    { _id: groupId },
+    { $pull: { invited: userToRemove } }
+  );
+};
+
 module.exports.editGroup = (group, newName, public) => {
   if (newName) {
     group.name = newName;

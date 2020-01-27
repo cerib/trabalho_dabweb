@@ -13,15 +13,16 @@ router.get("*", function(req, res, next) {
   next();
 });
 
-//só pra teste
-router.get("/dab1", (req, res, next) => {
-  res.redirect("/");
-});
+// POST /groups/ - criar novo grupo
+// GET /groups/:at/edit - render pagina editar grupo
+// POST /groups/:at/ - editar grupo (campos no body)
 
-//por enquanto é necessário aceder pela página: http://localhost:7777/groups/new
+// GET /groups/:at/follow - seguir grupo/ aceita convite
+// GET /groups/:at/unfollow - para de seguir grupo
+// GET /groups/:at/reject - rejeita convite
+
 //Depois adiciona-se o botão create grou que invoca este get.
 router.get("/new", ensureAuthenticated, (req, res) => {
-  console.log("\n\n\nInvocar a pagina de criar grupo\n\n");
   if (req.session.code) {
     let message = req.session.message;
     let body = req.session.body;
@@ -97,22 +98,15 @@ router.get("/:groupat/", ensureAuthenticated, async (req, res) => {
       });
     }
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
-
-// POST /groups/ - criar novo grupo
-// GET /groups/:at/edit - render pagina editar grupo
-// POST /groups/:at/ - editar grupo (campos no body)
-
-// GET /groups/:at/follow - seguir grupo/ aceita convite
-// GET /groups/:at/unfollow - para de seguir grupo/ rejeita convite
 
 /*
 router.get("", async (req, res, next) => {
   try {
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
 */
@@ -127,7 +121,7 @@ router.post("/:groupat/invite", ensureAuthenticated, async (req, res) => {
     //dar alguma indicacao se deu bem ou mal
     res.redirect("/groups");
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
 
@@ -148,11 +142,11 @@ router.get("/:groupat/follow", ensureAuthenticated, async (req, res) => {
       res.redirect("/groups");
     }
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
 
-/* Reject invite or unfollow group */
+/* Unfollow group */
 router.get("/:groupat/unfollow", ensureAuthenticated, async (req, res) => {
   //como a route utilizada para rejeitar o convite e a mesma do unfollow, e preciso verificar se o user tb nao e o criador do grupo
   try {
@@ -169,7 +163,20 @@ router.get("/:groupat/unfollow", ensureAuthenticated, async (req, res) => {
       res.redirect("/groups");
     }
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
+  }
+});
+
+/* Reject invite */
+router.get("/:groupat/reject", ensureAuthenticated, async (req, res) => {
+  //como a route utilizada para rejeitar o convite e a mesma do unfollow, e preciso verificar se o user tb nao e o criador do grupo
+  try {
+    let response = await axios.post(
+      `http://localhost:5000/api/groups/${req.params.groupat}/invite/${req.user.at}/reject`
+    );
+    res.redirect("/groups");
+  } catch (error) {
+    res.jsonp(error.response.data);
   }
 });
 
@@ -204,7 +211,7 @@ router.get("/", ensureAuthenticated, async (req, res) => {
       invites: invites
     });
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
   //let groups = res.render("groups/groups_index");
 });
