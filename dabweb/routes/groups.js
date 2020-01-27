@@ -90,7 +90,7 @@ router.get("/:groupat/", ensureAuthenticated, async (req, res) => {
     } else {
       res.render("groups/group_view", {
         group: response.data,
-        isownprofile: response.data.at_creator === req.user.at,
+        isownprofile: response.data.at === req.user.at,
         canpost:
           req.user.following.includes(req.params.groupat) &&
           (response.data.at !== response.data.at_creator ||
