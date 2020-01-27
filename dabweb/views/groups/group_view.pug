@@ -20,9 +20,9 @@ block authenticatedcontent
           b Conteúdo da Publicação
         textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
       if isownprofile
-        button.btn.btn-primary(type="submit") Publicar no grupo
-      else
         button.btn.btn-primary(type="submit") Publicar no perfil
+      else
+        button.btn.btn-primary(type="submit") Publicar no grupo
   .container-fluid(id="posts-container")
     each post in group.posts
       .card.mt-1(class="post")
