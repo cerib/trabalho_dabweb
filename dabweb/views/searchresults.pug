@@ -8,8 +8,6 @@ block scripts
 
 block authenticatedcontent
   .mt-5
-  if result == ""
-    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg") O handle pesquisado não existe
   if type == 1
     .card.w-50
       .card-body
@@ -37,12 +35,14 @@ block authenticatedcontent
       .card-body
         h5.card-title= result.name
         p.card-text @#{result.at}
-        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-primary.float-right.ml-2(href='/users/'+result.at) Ver
         a.btn.btn-danger.float-right(href='/groups/'+result.at+'/unfollow') Não seguir
   else if type == 0
     .card.w-50
       .card-body
         h5.card-title= result.name
         p.card-text @#{result.at}
-        a.btn.btn-primary.float-right.ml-2(href='/groups/'+result.at) Ver
+        a.btn.btn-primary.float-right.ml-2(href='/users/'+result.at) Ver
         a.btn.btn-success.float-right.ml-2(href='/groups/'+result.at+'/follow') Seguir
+  else
+    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg") O handle pesquisado não existe

@@ -117,52 +117,59 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
     if (searchterm.length > 2) {
       if (searchterm[0] === "@") {
         // procura por grupos e utilizadores atraves do at
-        let response = await axios.get(
-          `http://localhost:5000/api/groups/search/${searchterm.slice(1)}/${
-            req.user.at
-          }`
-        );
-        //type = 0 - user nao segue user
-        //type = 1 - user foi convidado
-        //type = 2 - user pertence ao grupo
-        //type = 3 - user nao pertence mas grupo é publico
-        //type = 4 - user segue user
         let type = 0;
-        //console.log(response.data);
-        //console.log(response.data.members.some(m => m.at == req.user.at));
-        //retira o proprio user
-        if (req.user.at != response.data.at) {
-          //se for um grupo
-          if (response.data.at != response.data.at_creator) {
-            //e o user estiver invited
-            if (response.data.invited.some(i => i.at == req.user.at)) {
-              type = 1;
-              //group.members.some(m => m.at === req.params.userat
-            } else if (response.data.members.some(m => m.at == req.user.at)) {
-              //e o user pertencer ao grupo
-              type = 2;
+        try {
+          let response = await axios.get(
+            `http://localhost:5000/api/groups/search/${searchterm.slice(1)}/${
+              req.user.at
+            }`
+          );
+          //type = 0 - user nao segue user
+          //type = 1 - user foi convidado
+          //type = 2 - user pertence ao grupo
+          //type = 3 - user nao pertence mas grupo é publico
+          //type = 4 - user segue user
+          //console.log(response == "");
+          //console.log(response.data.members.some(m => m.at == req.user.at));
+          //retira o proprio user
+          if (req.user.at != response.data.at) {
+            //se for um grupo
+            if (response.data.at != response.data.at_creator) {
+              //e o user estiver invited
+              if (response.data.invited.some(i => i.at == req.user.at)) {
+                type = 1;
+                //group.members.some(m => m.at === req.params.userat
+              } else if (response.data.members.some(m => m.at == req.user.at)) {
+                //e o user pertencer ao grupo
+                type = 2;
+              } else {
+                //grupo publico
+                type = 3;
+              }
+              //se nao for um grupo é um usergroup
             } else {
-              //grupo publico
-              type = 3;
+              if (response.data.members.some(m => m.at == req.user.at)) {
+                //alguem a quem o user já deu follow
+                type = 4;
+              } else {
+                //ja nao preciso deste caso mas vou deixar estar anyways
+                type = 0; //alguém que o user ainda nao seguiu
+              }
             }
-            //se nao for um grupo é um usergroup
           } else {
-            if (response.data.members.some(m => m.at == req.user.at)) {
-              //alguem a quem o user já deu follow
-              type = 4;
-            } else {
-              //ja nao preciso deste caso mas vou deixar estar anyways
-              type = 0; //alguém que o user ainda nao seguiu
-            }
+            //response.data = "";
+            type = -1;
           }
-        } else {
-          response.data = "";
+
+          console.log(response.data);
+          res.render("searchresults", { result: response.data, type: type });
+        } catch (error) {
+          type = -1;
+          res.render("searchresults", { result: "", type: type });
         }
-        //console.log("tipo: ");
 
-        //console.log(type);
-
-        res.render("searchresults", { result: response.data, type: type });
+        //console.log("Response\n");
+        //console.log("rd: ");
       } else if (searchterm[0] === "#") {
         // procura por posts com a hashtag (remove o # porque se nao nao funciona)
         let response = await axios.get(
