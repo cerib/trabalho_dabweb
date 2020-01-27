@@ -107,7 +107,7 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
       posts: response.data
     });
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
 
@@ -188,7 +188,7 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
       res.redirect("/feed");
     }
   } catch (error) {
-    res.jsonp(error);
+    res.jsonp(error.response.data);
   }
 });
 

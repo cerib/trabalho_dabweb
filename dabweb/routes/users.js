@@ -24,7 +24,7 @@ router.get("/:at", ensureAuthenticated, async (req, res) => {
       posts: response.data
     });
   } catch (error) {
-    res.status(400).jsonp(error);
+    res.status(400).jsonp(error.response.data);
   }
 });
 
