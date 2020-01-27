@@ -11,6 +11,11 @@
             span(style="font-size: 70%;")  &#9654; 
             span(id="groupat-span")
               a.text-info#group-link-modal(href="#" style="text-decoration: none;")
+          p Adicionar Ficheiro
+          form.form-inline#upload-file-form(action="#" method="post" enctype="multipart/form-data")
+            input#upload-file-form-input(type="file" name="file")
+            input(value=user.at name="userat" style="display:none")
+            input#upload-file-form-button(type="submit" value="Enviar")
         button.close(type='button' data-dismiss='modal' aria-label='Close')
           span(aria-hidden='true') &times;
       .modal-body

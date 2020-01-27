@@ -19,7 +19,7 @@ mongoose
 var groupsRouter = require("./routes/groups");
 var usersRouter = require("./routes/users");
 var postsRouter = require("./routes/posts");
-
+var filesRouter = require("./routes/files");
 var app = express();
 
 // view engine setup
@@ -35,6 +35,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/api/users", usersRouter);
 app.use("/api/posts", postsRouter);
 app.use("/api/groups", groupsRouter);
+app.use("/api/files", filesRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

@@ -8,13 +8,23 @@ const UserSemPw = mongoose.Schema({
   at: { type: String, required: true }
 });
 
+const File = new mongoose.Schema({
+  date: String,
+  name: String,
+  originalname: String,
+  mimetype: String,
+  size: Number,
+  userAt: String
+});
+
 const Post = mongoose.Schema(
   {
     author: { type: String, required: true },
     authorAt: { type: String, required: true },
     groupAt: { type: String, required: true },
     text: { type: String },
-    hashTags: Array
+    hashTags: Array,
+    files: [File]
   },
   { timestamps: true }
 );

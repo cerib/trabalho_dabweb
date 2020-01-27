@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Group = require("../models/group");
 const Post = require("../models/post");
+const File = require("../models/file");
 
 module.exports.insertNew = (groupAt, fields) => {
   let post = new Post(fields);
@@ -9,6 +10,27 @@ module.exports.insertNew = (groupAt, fields) => {
     {
       $push: { posts: { $each: [post], $position: 0 } }
     }
+  );
+};
+
+module.exports.addFile = async (postId, fileFields) => {
+  console.log("Dentro de addfile");
+  let objId = mongoose.Types.ObjectId(postId);
+
+  let file = await new File(fileFields).save();
+
+  let post = await Group.aggregate([
+    { $unwind: "$posts" },
+    { $match: { "posts._id": objId } },
+    { $replaceWith: "$posts" }
+  ]);
+  file._id = `ObjectId("${file._id}")`;
+  post[0].files.push(file);
+  let files = post[0].files;
+
+  return Group.updateOne(
+    { posts: { $elemMatch: { _id: objId } } },
+    { $set: { "posts.$.files": files } }
   );
 };
 
