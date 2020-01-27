@@ -7,28 +7,28 @@ block scripts
   script(src="/javascripts/feed.js")
 
 block authenticatedcontent
-  .mt-5
-  if result
-    each post in result
-        .card.mt-1(class="post")
-            if post.image
-                img.card-img-top(src='...' alt='...')
-            .card-body
-                h5.card-title.text-muted(style="font-size: small;")
-                    span(data-author-name=post.author) #{post.author} 
-                        a(href="/users/" + post.authorAt) @#{post.authorAt}
-                    if post.authorAt != post.groupAt
-                        span(style="font-size: 70%;")  &#9654; 
-                        span
-                            a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
-                    if post.authorAt == user.at
-                        span
-                            //NAO ALTERAR ORDEM DOS ATRIBUTOS. COLOCAR NOVOS NO FIM. SE FOR PARA APAGAR ALGUM, ALTERAR INDICE NO feed.js, a modal vai estragar
-                            div#edit-link-data(style="display: none" post-id=post._id author-name=post.author author-at=post.authorAt group-at=post.groupAt)
-                            a.text-info.float-right.edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable') editar
+    .mt-5
+    if result.length >=1
+        each post in result
+            .card.mt-1(class="post")
+                if post.image
+                    img.card-img-top(src='...' alt='...')
+                .card-body
+                    h5.card-title.text-muted(style="font-size: small;")
+                        span(data-author-name=post.author) #{post.author} 
+                            a(href="/users/" + post.authorAt) @#{post.authorAt}
+                        if post.authorAt != post.groupAt
+                            span(style="font-size: 70%;")  &#9654; 
+                            span
+                                a.text-info(href="/groups/" + post.groupAt style="text-decoration: none;") #{post.groupAt}
+                        if post.authorAt == user.at
+                            span
+                                //NAO ALTERAR ORDEM DOS ATRIBUTOS. COLOCAR NOVOS NO FIM. SE FOR PARA APAGAR ALGUM, ALTERAR INDICE NO feed.js, a modal vai estragar
+                                div#edit-link-data(style="display: none" post-id=post._id author-name=post.author author-at=post.authorAt group-at=post.groupAt)
+                                a.text-info.float-right.edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable') editar
                   
-                hr
-                p.card-text.mt-3(style="font-size: 115%;")
-                    =post.text
-  else
-    div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg") A hashtag pesquisada não existe
+                    hr
+                    p.card-text.mt-3(style="font-size: 115%;")
+                        =post.text
+    else
+        div.alert.alert-warning.alert-dismissible.fade.show(role="alert" class="alert-msg") A hashtag pesquisada não existe
