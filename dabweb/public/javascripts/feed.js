@@ -5,8 +5,8 @@ window.onload = function() {
   var posts = document.getElementsByClassName("card-text");
   for (let post of posts) {
     post.innerHTML = post.innerHTML.replace(
-      /(#[A-z0-9]+)/g,
-      '<a href="http://localhost:7777/hashtag/$1">$1</a>'
+      /((#)([A-z0-9]+))/g,
+      '<a href="http://localhost:7777/search?searchterm=%23$3">$1</a>'
     );
   }
 };
