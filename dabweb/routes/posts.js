@@ -96,12 +96,19 @@ router.post("/:id/delete", ensureAuthenticated, async (req, res) => {
   }
 });
 
-router.get("/downloadfile/:fileid/", ensureAuthenticated, async (req, res) => {
+router.get("/downloadfile/", ensureAuthenticated, async (req, res) => {
   try {
+    let fileId = req.query.id;
     let fileInfo = await axios.get(
-      `http://localhost:5000/api/files/getfile/${req.params.fileid}/`
+      `http://localhost:5000/api/files/getfile/${fileId}/`
     );
-    res.jsonp(fileInfo.data);
+    let fpath =
+      __dirname +
+      "/../public/ficheiros/" +
+      fileInfo.data.userAt +
+      "/" +
+      fileInfo.data.name;
+    res.download(fpath, fileInfo.data.originalname);
   } catch (error) {
     res.jsonp(error.response.data);
   }
@@ -143,7 +150,7 @@ router.post(
           mimetype: req.file.mimetype,
           size: req.file.size,
           userAt: req.body.userat,
-          path: `/../public/ficheiros/${req.user.at}/${req.file.filename}`
+          path: `/../ficheiros/${req.user.at}/${req.file.filename}`
         };
         let response = await axios.post(
           `http://localhost:5000/api/files/addfile/${req.params.postid}`,

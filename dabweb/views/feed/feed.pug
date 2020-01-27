@@ -14,6 +14,11 @@ block authenticatedcontent
         b Conteúdo da Publicação
       textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
     button.btn.btn-primary(type="submit") Publicar no perfil
+  #fileModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='fileModal' aria-hidden='true')
+    .modal-dialog.modal-dialog-scrollable(role='document')
+      .modal-content
+        .modal-body#display
+        
   .container-fluid(id="posts-container")
     each post in posts
       .card.mt-1(class="post")
@@ -41,4 +46,4 @@ block authenticatedcontent
             p Ficheiros:
             ul.list-group.list-group-flush
               each file in post.files
-                li.list-group-item(id=file._id onclick=`showFicheiro(${JSON.stringify(file)})`) #{file.originalname} - #{file.mimetype}
+                li.list-group-item(id=file._id onclick=`showFicheiro(${JSON.stringify(file)})` data-toggle='modal' data-target='#fileModal') #{file.originalname} - #{file.mimetype}
