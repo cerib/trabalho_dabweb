@@ -117,8 +117,22 @@ router.get("", async (req, res, next) => {
 });
 */
 
+/* Invite to group */
+router.post("/:groupat/invite", ensureAuthenticated, async (req, res) => {
+  try {
+    // /api/groups/:groupat/invite/:invitedat
+    let response = await axios.post(
+      `http://localhost:5000/api/groups/${req.params.groupat}/invite/${req.body.invitedat}`
+    );
+    //dar alguma indicacao se deu bem ou mal
+    res.redirect("/groups");
+  } catch (error) {
+    res.jsonp(error);
+  }
+});
+
 /* Accept invite/ follow public group */
-router.get("/:groupat/follow", async (req, res, next) => {
+router.get("/:groupat/follow", ensureAuthenticated, async (req, res) => {
   try {
     let response = await axios.get(
       "http://localhost:5000/api/groups/" + req.params.groupat
@@ -139,7 +153,7 @@ router.get("/:groupat/follow", async (req, res, next) => {
 });
 
 /* Reject invite or unfollow group */
-router.get("/:groupat/unfollow", async (req, res, next) => {
+router.get("/:groupat/unfollow", ensureAuthenticated, async (req, res) => {
   //como a route utilizada para rejeitar o convite e a mesma do unfollow, e preciso verificar se o user tb nao e o criador do grupo
   try {
     let response = await axios.get(

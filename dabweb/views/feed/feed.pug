@@ -32,6 +32,7 @@ block authenticatedcontent
                   //NAO ALTERAR ORDEM DOS ATRIBUTOS. COLOCAR NOVOS NO FIM. SE FOR PARA APAGAR ALGUM, ALTERAR INDICE NO feed.js, a modal vai estragar
                   div#edit-link-data(style="display: none" post-id=post._id author-name=post.author author-at=post.authorAt group-at=post.groupAt)
                   a.text-info.float-right.edit-link(href="#" data-toggle='modal' data-target='#exampleModalScrollable') editar
+                  
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text
