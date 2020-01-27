@@ -36,3 +36,9 @@ block authenticatedcontent
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text
+          if post.files && post.files[0]
+            hr
+            p Ficheiros:
+            ul.list-group.list-group-flush
+              each file in post.files
+                li.list-group-item #{file.originalname} - #{file.mimetype}

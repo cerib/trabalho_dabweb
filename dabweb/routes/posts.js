@@ -93,4 +93,9 @@ router.post("/:id/delete", ensureAuthenticated, async (req, res) => {
   }
 });
 
+router.post("/:postid/uploadfile", ensureAuthenticated, async (req, res) => {
+  console.log(req.body);
+  console.log(req);
+});
+
 module.exports = router;
