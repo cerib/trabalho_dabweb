@@ -46,4 +46,4 @@ block authenticatedcontent
             p Ficheiros:
             ul.list-group.list-group-flush
               each file in post.files
-                li.list-group-item(id=file._id onclick=`showFicheiro(${JSON.stringify(file)})` data-toggle='modal' data-target='#fileModal') #{file.originalname} - #{file.mimetype}
+                li.list-group-item.text-info( style=" cursor: pointer;" id=file._id onclick=`showFicheiro(${JSON.stringify(file)})` data-toggle='modal' data-target='#fileModal') #{file.originalname} - #{file.mimetype}
