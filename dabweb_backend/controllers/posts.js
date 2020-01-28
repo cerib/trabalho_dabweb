@@ -104,6 +104,7 @@ module.exports.findByGroupArray = groups => {
 module.exports.findByHashTag = hashtag => {
   return Group.aggregate([
     { $unwind: "$posts" },
+    { $addFields: { "posts.public": "$public" } },
     { $match: { "posts.hashTags": hashtag } },
     { $replaceWith: "$posts" }
   ]);
