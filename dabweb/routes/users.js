@@ -21,7 +21,8 @@ router.get("/:at", ensureAuthenticated, async (req, res) => {
       "http://localhost:5000/api/posts/groups/" + req.params.at
     );
     res.render("user/profile", {
-      posts: response.data
+      posts: response.data,
+      at: req.params.at
     });
   } catch (error) {
     res.status(400).jsonp(error.response.data);

@@ -1,6 +1,12 @@
-extends layout
+extends sidebar
 
-block content
+block stylesheets
+  link(rel='stylesheet', href='/stylesheets/dashboard.css')
+
+block scripts
+  script(src="/javascripts/feed.js")
+
+block authenticatedcontent
   h1= message
-  h2= error.status
-  pre #{error.stack}
+  h2= status
+  pre #{stack}

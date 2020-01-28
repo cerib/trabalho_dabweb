@@ -181,7 +181,10 @@ router.get("/search", ensureAuthenticated, async (req, res) => {
         //res.header("Content-Type", "application/json");
         //res.send(JSON.stringify(response.data, null, 4));
         console.log(response.data);
-        res.render("searchresultsht", { result: response.data });
+        let allowedToViewPosts = response.data.filter(
+          post => req.user.following.includes(post.groupAt) || post.public
+        );
+        res.render("searchresultsht", { result: allowedToViewPosts });
       } else {
         //ta mal nao estamos a pesquisar grupos aqui
         res.jsonp({ error: "Search without @ or # not available yet" });

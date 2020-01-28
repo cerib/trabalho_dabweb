@@ -8,12 +8,15 @@ block scripts
 
 block authenticatedcontent
   include ../fragments/editpostmodal
+  include ../fragments/viewfilemodal
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
       label
         b Conteúdo da Publicação
       textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
     button.btn.btn-primary(type="submit") Publicar no perfil
+
+        
   .container-fluid(id="posts-container")
     each post in posts
       .card.mt-1(class="post")
@@ -41,4 +44,4 @@ block authenticatedcontent
             p Ficheiros:
             ul.list-group.list-group-flush
               each file in post.files
-                li.list-group-item(id=file._id onclick=`showFicheiro(${JSON.stringify(file)})`) #{file.originalname} - #{file.mimetype}
+                li.list-group-item.text-info( style=" cursor: pointer;" id=file._id onclick=`showFicheiro(${JSON.stringify(file)})` data-toggle='modal' data-target='#fileModal') #{file.originalname} - #{file.mimetype}

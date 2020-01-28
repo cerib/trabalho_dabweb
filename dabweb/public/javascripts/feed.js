@@ -73,13 +73,18 @@ submitEdit = function() {
 };
 
 showFicheiro = function(f) {
-  if (f.mimetype == "image/png")
-    var ficheiro = $('<img src="/ficheiros/' + f.name + '" width="80%"/>');
-  else var ficheiro = $("<p>" + JSON.stringify(f) + "</p>");
+  if (f.mimetype == "image/png" || f.mimetype == "image/jpeg") {
+    var ficheiro = $('<img src="' + f.path + '" width="80%"/>');
+  } else var ficheiro = $("<p>" + f.originalname + "</p>");
   var download = $(
-    '<div><a href="/download/' + f.name + '">Download</a></div>'
+    '<div><a href="/posts/downloadfile/?path=' +
+      f.path +
+      "&id=" +
+      f._id +
+      '">Download</a></div>'
   );
   $("#display").empty();
   $("#display").append(ficheiro, download);
   $("#display").modal();
+  $(".modal-backdrop").remove();
 };
