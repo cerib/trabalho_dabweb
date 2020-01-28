@@ -8,16 +8,14 @@ block scripts
 
 block authenticatedcontent
   include ../fragments/editpostmodal
+  include ../fragments/viewfilemodal
   form(action="/posts/" + user.at method="POST" id="new-post-form")
     div.form-group
       label
         b Conteúdo da Publicação
       textarea.form-control(type="text" id="new-post-form-textarea" maxlength="1000" name="text" autocomplete="off" required)
     button.btn.btn-primary(type="submit") Publicar no perfil
-  #fileModal.modal.fade(tabindex='-1' role='dialog' aria-labelledby='fileModal' aria-hidden='true')
-    .modal-dialog.modal-dialog-scrollable(role='document')
-      .modal-content
-        .modal-body#display
+
         
   .container-fluid(id="posts-container")
     each post in posts

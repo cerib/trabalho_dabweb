@@ -9,6 +9,7 @@ block scripts
 block authenticatedcontent
 
   include ../fragments/editpostmodal
+  include ../fragments/viewfilemodal
   if user.at == at
     form(action="/posts/" + user.at method="POST" id="new-post-form")
       div.form-group
@@ -37,3 +38,9 @@ block authenticatedcontent
           hr
           p.card-text.mt-3(style="font-size: 115%;")
             =post.text
+          if post.files && post.files[0]
+            hr
+            p Ficheiros:
+            ul.list-group.list-group-flush
+              each file in post.files
+                li.list-group-item.text-info( style=" cursor: pointer;" id=file._id onclick=`showFicheiro(${JSON.stringify(file)})` data-toggle='modal' data-target='#fileModal') #{file.originalname} - #{file.mimetype}
