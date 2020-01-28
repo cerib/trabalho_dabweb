@@ -1,6 +1,6 @@
 var express = require("express");
 var router = express.Router();
-
+const Secret = require("../controllers/secret");
 const Users = require("../controllers/users");
 const Posts = require("../controllers/posts");
 const Groups = require("../controllers/groups");
@@ -108,12 +108,16 @@ router.get("/:at/profile", async (req, res, next) => {
 
 /* Fetch posts from groups where user belongs */
 router.get("/:at/feed", async (req, res, next) => {
-  try {
-    let user = await Users.Search(req.params.at);
-    let posts = await Posts.findByGroupArray(user.following);
-    res.jsonp(posts);
-  } catch (e) {
-    res.status(400).jsonp(error);
+  if (req.query.apikey == Secret.apikey) {
+    try {
+      let user = await Users.Search(req.params.at);
+      let posts = await Posts.findByGroupArray(user.following);
+      res.jsonp(posts);
+    } catch (e) {
+      res.status(400).jsonp(error);
+    }
+  } else {
+    res.status(403).send("API key inválida");
   }
 });
 

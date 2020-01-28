@@ -101,7 +101,7 @@ router.get("/feed", ensureAuthenticated, async (req, res) => {
   try {
     //posts de todos os grupos que o user segue
     let response = await axios.get(
-      `http://localhost:5000/api/users/${req.user.at}/feed`
+      `http://localhost:5000/api/users/${req.user.at}/feed?apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE1ODAwMDAwMDAsImV4cCI6MTU4MTQ1MjA1MH0.9Ev0GdwYEc_t18o1uQDlJqhvfxe3k58po7B2jewTssw`
     );
     res.render("./feed/feed", {
       posts: response.data
