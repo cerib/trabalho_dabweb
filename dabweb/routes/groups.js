@@ -122,6 +122,7 @@ router.post("/:groupat/invite", ensureAuthenticated, async (req, res) => {
     res.redirect("/groups");
   } catch (error) {
     res.jsonp(error.response.data);
+    //res.redirect("/groups");
   }
 });
 

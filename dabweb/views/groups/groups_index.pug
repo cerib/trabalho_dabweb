@@ -49,7 +49,9 @@ block authenticatedcontent
                   a(href=`/groups/${group.at}` class="stretched-link")
                   hr
                 form.input-group.mb-3(action=`/groups/${group.at}/invite/` method="POST")
-                  input.form-control(type='text' name="invitedat" placeholder="@ do utilizador" aria-label="@ do utilizador" aria-describedby='basic-addon2')
+                  .input-group-prepend
+                      span#basic-addon1.input-group-text @
+                  input.form-control(type='text' name="invitedat" placeholder="utilizador" aria-label="@ do utilizador" aria-describedby='basic-addon2')
                   .input-group-append
                     button.btn.btn-outline-secondary(type='submit') +
                 //a.card-link(href='#') Card link
